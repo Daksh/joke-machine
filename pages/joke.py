@@ -20,9 +20,9 @@
 
 
 import os
-import gtk
+from gi.repository import Gtk
 import hippo
-import pango
+from gi.repository import Pango
 from gettext import gettext as _
 import logging
 
@@ -97,12 +97,12 @@ class Joke(Page):
     if len(jokebook.jokes) <= joke_id:
       self.append(self.make_bodytext(_('This Jokebook is empty')))
       if not Globals.JokeMachineActivity.is_initiator:
-        button = gtk.Button(_('Submit a Joke'))
+        button = Gtk.Button(_('Submit a Joke'))
         button.connect('clicked', self.__do_clicked_submit, jokebook, joke_id)        
         self.append(hippo.CanvasWidget(widget=theme.theme_widget(button), 
                                        padding_top=20))
       else:
-        button = gtk.Button(_('Add Jokes'))
+        button = Gtk.Button(_('Add Jokes'))
         button.connect('clicked', self.__do_clicked_add, jokebook, joke_id)        
         self.append(hippo.CanvasWidget(widget=theme.theme_widget(button), 
                                        padding_top=20))
@@ -121,7 +121,7 @@ class Joke(Page):
       orientation=hippo.ORIENTATION_HORIZONTAL)
 
     # the answer button
-    button = gtk.Button(_('Answer'))
+    button = Gtk.Button(_('Answer'))
     button.connect('clicked', self.__do_clicked_answer, jokebook, joke_id)        
     self.navigation_box.append(hippo.CanvasWidget(widget=theme.theme_widget(button), padding_top=20))
     self.joke_box.right.append(self.navigation_box)
@@ -151,13 +151,13 @@ class Joke(Page):
     
     # check if there are any more jokes left
     if len(jokebook.jokes) > joke_id + 1:
-      button = gtk.Button(_('Next'))
+      button = Gtk.Button(_('Next'))
       button.connect('clicked', self.__do_clicked_next, jokebook, joke_id + 1)        
       self.navigation_box.append(hippo.CanvasWidget(widget=theme.theme_widget(button), padding_right=10, padding_top=20))
     
     # only allow submitting a joke if activity is shared and you are the one joining
     if not Globals.JokeMachineActivity.is_initiator:
-      button = gtk.Button(_('Submit a Joke'))
+      button = Gtk.Button(_('Submit a Joke'))
       button.connect('clicked', self.__do_clicked_submit, jokebook, joke_id)        
       self.navigation_box.append(hippo.CanvasWidget(widget=theme.theme_widget(button), 
                                                     padding_top=20))

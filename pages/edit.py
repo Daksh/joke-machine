@@ -20,9 +20,9 @@
 
 
 import os
-import gtk
+from gi.repository import Gtk
 import hippo
-import pango
+from gi.repository import Pango
 import logging
 from gettext import gettext as _
 
@@ -116,7 +116,7 @@ class Edit(Page):
     self.append(self.__page_selector, hippo.PACK_EXPAND)
     self.__page_selector.page = EditInfo(jokebook, self)
     
-    button = gtk.Button(_('Preview'))
+    button = Gtk.Button(_('Preview'))
     button.connect('clicked', self.__do_clicked_preview, jokebook)    
     self.append(hippo.CanvasWidget(widget=theme.theme_widget(button), padding_top=theme.SPACER_VERTICAL))
 
@@ -170,7 +170,7 @@ class EditJokes(Page):
     jokes_div = CanvasListBox()
     jokes_div.props.border=0
     for joke in jokebook.jokes:
-      button = gtk.Button(' ' + _('Delete') + ' ')
+      button = Gtk.Button(' ' + _('Delete') + ' ')
       button.connect('clicked', self.__do_clicked_delete, jokebook, joke)
       list_row = self.make_listrow(JokeEditor(joke), hippo.PACK_EXPAND)
       list_row.append(hippo.CanvasWidget(widget=theme.theme_widget(button),
@@ -182,23 +182,23 @@ class EditJokes(Page):
     # new joke button
     buttons = hippo.CanvasBox(orientation=hippo.ORIENTATION_HORIZONTAL,
                               xalign=hippo.ALIGNMENT_START)
-    button = gtk.Button(_('Add New Joke'))
+    button = Gtk.Button(_('Add New Joke'))
     button.connect('clicked', self.do_clicked_add_joke, jokebook)    
     buttons.append(hippo.CanvasWidget(widget=theme.theme_widget(button)))    
     jokes_div.append(buttons)
     
     
   def __do_clicked_delete(self, button, jokebook, joke):
-    confirm = gtk.MessageDialog(Globals.JokeMachineActivity, 
-                                gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                gtk.MESSAGE_QUESTION,
-                                gtk.BUTTONS_YES_NO,
+    confirm = Gtk.MessageDialog(Globals.JokeMachineActivity, 
+                                Gtk.DIALOG_MODAL | Gtk.DIALOG_DESTROY_WITH_PARENT,
+                                Gtk.MESSAGE_QUESTION,
+                                Gtk.BUTTONS_YES_NO,
                                 _('Are you sure you want to delete this joke ?'))
     response = confirm.run()
     confirm.hide()
     confirm.destroy()
     del confirm
-    if response == gtk.RESPONSE_YES:
+    if response == Gtk.RESPONSE_YES:
       logging.debug('Deleting joke: %s' % joke.id)
       jokebook.jokes.remove(joke)
       self.__parent.do_tab_clicked(EditJokes)
@@ -234,14 +234,14 @@ class EditReview(Page):
                                 spacing=10,
                                 padding=10)
       
-      button = gtk.Button(' ' + _('Reject') + ' ')
+      button = Gtk.Button(' ' + _('Reject') + ' ')
       button.connect('clicked', self.__do_clicked_reject, jokebook, joke)
       buttons.append(hippo.CanvasWidget(widget=theme.theme_widget(button),
                                         border_color=theme.COLOR_RED.get_int(),
                                         border=0,
                                         xalign=hippo.ALIGNMENT_CENTER))
 
-      button = gtk.Button(' ' + _('Accept') + ' ')
+      button = Gtk.Button(' ' + _('Accept') + ' ')
       button.connect('clicked', self.__do_clicked_accept, jokebook, joke)
       buttons.append(hippo.CanvasWidget(widget=theme.theme_widget(button),
                                         border_color=theme.COLOR_RED.get_int(),
@@ -259,14 +259,14 @@ class EditReview(Page):
                                   #box_width=100,
                                   #xalign=hippo.ALIGNMENT_START))
       ##button = None
-      #button = gtk.RadioButton()
-      #button = gtk.RadioButton(button, _('Approved'))
+      #button = Gtk.RadioButton()
+      #button = Gtk.RadioButton(button, _('Approved'))
       #button.set_size_request(200, -1)
       #status_box.append(hippo.CanvasWidget(widget = button))
-      #button = gtk.RadioButton(button, _('Rejected'))
+      #button = Gtk.RadioButton(button, _('Rejected'))
       #button.set_size_request(200, -1)
       #status_box.append(hippo.CanvasWidget(widget = button))
-      #button = gtk.RadioButton(button, _('Not Reviewed'))
+      #button = Gtk.RadioButton(button, _('Not Reviewed'))
       #button.set_size_request(200, -1)
       #button.set_active(True)
       #status_box.append(hippo.CanvasWidget(widget = button))

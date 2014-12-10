@@ -19,9 +19,9 @@
 #
 
 import os
-import gtk
+from gi.repository import Gtk
 import hippo
-import pango
+from gi.repository import Pango
 import logging
 from gettext import gettext as _
 
@@ -50,7 +50,7 @@ class Cover(Page):
     self.append(hippo.CanvasBox(box_height=theme.SPACER_VERTICAL))
     
     # open button 
-    button = gtk.Button(_('Open'))
+    button = Gtk.Button(_('Open'))
     button.connect('clicked', self.__do_clicked_open, jokebook)
     button.set_size_request(50, -1)
     self.append(hippo.CanvasWidget(widget=theme.theme_widget(button),

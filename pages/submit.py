@@ -20,9 +20,9 @@
 
 
 import os
-import gtk
+from gi.repository import Gtk
 import hippo
-import pango
+from gi.repository import Pango
 import logging
 from gettext import gettext as _
 
@@ -102,10 +102,10 @@ class Submit(Page):
       padding_top=8,
       spacing=18,
       orientation=hippo.ORIENTATION_HORIZONTAL)
-    button = gtk.Button(_('Submit'))
+    button = Gtk.Button(_('Submit'))
     button.connect('clicked', self.__do_clicked_submit, jokebook, joke)    
     nav.append(hippo.CanvasWidget(widget=theme.theme_widget(button), padding_right=10, padding_top=20))
-    button = gtk.Button(_('Back'))
+    button = Gtk.Button(_('Back'))
     button.connect('clicked', self.__do_clicked_back, jokebook, last_joke)    
     nav.append(hippo.CanvasWidget(widget=theme.theme_widget(button), padding_top=20))
     jokebox.right.append(nav)

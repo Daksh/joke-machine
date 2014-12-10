@@ -22,4 +22,4 @@
 = Known Problems =
 
 * i18n is only translating alerts at the moment for some strange reason
-* Deprecating theme_widget() for custom gtkrc fixes language combo but there are now faint hints of Irish in the activity frame :)
+* Deprecating theme_widget() for custom Gtkrc fixes language combo but there are now faint hints of Irish in the activity frame :)

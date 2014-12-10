@@ -19,9 +19,9 @@
 #
 
 import os
-import gtk
+from gi.repository import Gtk
 import hippo
-import pango
+from gi.repository import Pango
 import logging
 from gettext import gettext as _
 
@@ -68,16 +68,16 @@ class Choose(Page):
     if jokebook.title is not None:
       message += '\'' + jokebook.title + '\' ' 
     message += _('jokebook ?')
-    confirm = gtk.MessageDialog(Globals.JokeMachineActivity, 
-                                gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                gtk.MESSAGE_QUESTION,
-                                gtk.BUTTONS_YES_NO,
+    confirm = Gtk.MessageDialog(Globals.JokeMachineActivity, 
+                                Gtk.DIALOG_MODAL | Gtk.DIALOG_DESTROY_WITH_PARENT,
+                                Gtk.MESSAGE_QUESTION,
+                                Gtk.BUTTONS_YES_NO,
                                 message)
     response = confirm.run()
     confirm.hide()
     confirm.destroy()
     del confirm
-    if response == gtk.RESPONSE_YES:
+    if response == Gtk.RESPONSE_YES:
       logging.debug('Deleting jokebook: %s' % jokebook.title)
       Globals.JokeMachineState.jokebooks.remove(jokebook)
       Globals.JokeMachineActivity.set_page(pages.choose.Choose)
@@ -104,11 +104,11 @@ class Choose(Page):
     
     # buttons
     if edit:
-      button = gtk.Button(_('Edit'))
+      button = Gtk.Button(_('Edit'))
       button.connect('clicked', self.__do_clicked_edit, jokebook)
       list_row.append(self.__make_column_div(100, hippo.CanvasWidget(widget=theme.theme_widget(button))))
       list_row.append(hippo.CanvasBox(box_width=theme.SPACER_HORIZONTAL)) # TODO spacer
-      button = gtk.Button(_('Delete'))
+      button = Gtk.Button(_('Delete'))
       button.connect('clicked', self.__do_clicked_delete, jokebook)
       list_row.append(self.__make_column_div(100, hippo.CanvasWidget(widget=theme.theme_widget(button))))
       list_row.append(hippo.CanvasBox(box_width=theme.SPACER_HORIZONTAL)) # TODO spacer    

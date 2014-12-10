@@ -75,7 +75,7 @@ class AudioPlayer(object):
 
   def play(self):
     logging.debug('AudioPlayer - started playing sound')
-    self.pipeline.set_state(gst.STATE_PLAYING)
+    self.pipeline.set_state(gst.StateType.PLAYING)
     logging.debug('AudioPlayer - finished playing sound')
 
 
@@ -122,10 +122,10 @@ class AudioPlayer(object):
     t = message.type
     #logging.debug('message: %r' % t)
     if t == gst.MESSAGE_EOS:
-      self.pipeline.set_state(gst.STATE_NULL)
+      self.pipeline.set_state(gst.StateType.NULL)
       logging.debug('AudioPlayer - EOS')
     elif t == gst.MESSAGE_ERROR:
-      self.pipeline.set_state(gst.STATE_NULL)
+      self.pipeline.set_state(gst.StateType.NULL)
       err, debug = message.parse_error()
       logging.debug('AudioPlayer - Error: %r %r', err, debug)
 

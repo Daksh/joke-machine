@@ -19,27 +19,27 @@
 #
 
 import os
-import gtk
+from gi.repository import Gtk
 import cairo # for getting png for CanvasImage
-import pango
+from gi.repository import Pango
 import hippo
 import logging
 import StringIO
 
 from gettext import gettext as _
 
-from sugar.graphics import style
-from sugar.graphics.objectchooser import ObjectChooser
-from sugar import mime
+from sugar3.graphics import style
+from sugar3.graphics.objectchooser import ObjectChooser
+from sugar3.import mime
 
 # argh!
 try:
-  from sugar.graphics.roundbox import RoundBox 
+  from sugar3.graphics.roundbox import RoundBox 
 except ImportError:
   try:
-    from sugar.graphics.roundbox import CanvasRoundBox as RoundBox
+    from sugar3.graphics.roundbox import CanvasRoundBox as RoundBox
   except ImportError:
-    from sugar.graphics.canvasroundbox import CanvasRoundBox as RoundBox
+    from sugar3.graphics.canvasroundbox import CanvasRoundBox as RoundBox
 
 
 from util.persistence import Persistent, PersistentProperty
@@ -51,7 +51,7 @@ from gui import theme
 from globals import Globals
 
 
-THUMB_SIZE = min(gtk.gdk.screen_width(), gtk.gdk.screen_height()) / 2
+THUMB_SIZE = min(Gdk.screen_width(), Gdk.screen_height()) / 2
 
 
 class Page(hippo.CanvasBox):
@@ -223,25 +223,25 @@ class Page(hippo.CanvasBox):
   # TODO: Implement editable and multiline
   # TODO: Lose multiline and change height variable to num_lines
   def __textview(self, text, width=300, height=-1, editable=True, multiline=False):
-    textview = gtk.TextView()
+    textview = Gtk.TextView()
     textview.get_buffer().set_text(text)
 
     # control props
-    textview.set_wrap_mode(gtk.WRAP_WORD)
-    textview.modify_base(gtk.STATE_NORMAL, theme.COLOR_TEXTBOX.get_gdk_color())
+    textview.set_wrap_mode(Gtk.WRAP_WORD)
+    textview.modify_base(Gtk.StateType.NORMAL, theme.COLOR_TEXTBOX.get_gdk_color())
     textview.set_editable(editable)
     textview.set_cursor_visible(editable)
     if height == -1:
       context = textview.create_pango_context()
-      layout = pango.Layout(context)
+      layout = Pango.Layout(context)
       layout.set_text(text[ : text.find('\n')])
       (w, h) = layout.get_pixel_size()
       height = h #+ theme.BORDER_WIDTH_CONTROL / 2 # fudge factor - on the XO-1 hardware all known solutions evaporate
     textview.set_size_request(width, height)
-    textview.set_border_window_size(gtk.TEXT_WINDOW_LEFT, 0)
-    textview.set_border_window_size(gtk.TEXT_WINDOW_RIGHT, 0)
-    textview.set_border_window_size(gtk.TEXT_WINDOW_TOP, 0)
-    textview.set_border_window_size(gtk.TEXT_WINDOW_BOTTOM, 0)
+    textview.set_border_window_size(Gtk.TEXT_WINDOW_LEFT, 0)
+    textview.set_border_window_size(Gtk.TEXT_WINDOW_RIGHT, 0)
+    textview.set_border_window_size(Gtk.TEXT_WINDOW_TOP, 0)
+    textview.set_border_window_size(Gtk.TEXT_WINDOW_BOTTOM, 0)
     textview.show()
     
     if editable: # because rounded corners are well... pretty
@@ -301,11 +301,11 @@ class Page(hippo.CanvasBox):
     # Courtesy of Write.activity - toolbar.py
     chooser = ObjectChooser(title=_('Choose image'), 
                             parent=Globals.JokeMachineActivity, #._parent,
-                            flags=gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                            flags=Gtk.DIALOG_MODAL | Gtk.DIALOG_DESTROY_WITH_PARENT,
                             **filter)
     try:
       result = chooser.run()
-      if result == gtk.RESPONSE_ACCEPT:
+      if result == Gtk.RESPONSE_ACCEPT:
         logging.debug('ObjectChooser: %r' % chooser.get_selected_object())
         journal_object = chooser.get_selected_object()
         if hasattr(obj, 'image_blob') and journal_object and journal_object.file_path:
@@ -333,11 +333,11 @@ class Page(hippo.CanvasBox):
     logging.debug('choosing sound file') 
     chooser = ObjectChooser(title=_('Choose Sound'), 
                             parent=Globals.JokeMachineActivity, #._parent,
-                            flags=gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                            flags=Gtk.DIALOG_MODAL | Gtk.DIALOG_DESTROY_WITH_PARENT,
                             **filter)
     try:
       result = chooser.run()
-      if result == gtk.RESPONSE_ACCEPT:
+      if result == Gtk.RESPONSE_ACCEPT:
         logging.debug('ObjectChooser: %r' % chooser.get_selected_object())
         journal_object = chooser.get_selected_object()
         if hasattr(obj, 'sound_blob') and journal_object and journal_object.file_path:
@@ -367,7 +367,7 @@ class Page(hippo.CanvasBox):
     player.play()
 
 def _load_image(file_name):
-    pixbuf = gtk.gdk.pixbuf_new_from_file_at_size(file_name,
+    pixbuf = Gdk.pixbuf_new_from_file_at_size(file_name,
             THUMB_SIZE, THUMB_SIZE)
     if pixbuf is None:
         return None

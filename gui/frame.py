@@ -18,8 +18,8 @@
 # own creations we would love to hear from you at info@WorldWideWorkshop.org !
 #
 
-import gobject
-import gtk
+from gi.repository import GObject
+from gi.repository import Gtk
 import hippo
 import logging
 
@@ -87,7 +87,7 @@ class Frame(hippo.Canvas):
       orientation=hippo.ORIENTATION_HORIZONTAL)
     
     # logo
-    logo = gtk.Image()
+    logo = Gtk.Image()
     logo.set_from_file(Globals.logo)
     ret.append(hippo.CanvasWidget(widget=logo))
     
@@ -103,7 +103,7 @@ class Frame(hippo.Canvas):
                                       padding_right=30,
                                       yalign=hippo.ALIGNMENT_CENTER,
                                       orientation=hippo.ORIENTATION_VERTICAL)
-    button = gtk.Button(_('Lesson Plans'))
+    button = Gtk.Button(_('Lesson Plans'))
     button.set_size_request(200, -1)
     button.active = False
     button.connect('clicked', self.__do_clicked_lessonplans)
@@ -121,11 +121,11 @@ class Frame(hippo.Canvas):
       padding_bottom=0,
       spacing=8,
       orientation=hippo.ORIENTATION_HORIZONTAL)
-    button = gtk.Button(_('Read Jokebooks'))
+    button = Gtk.Button(_('Read Jokebooks'))
     button.connect('clicked', self.__do_clicked_read)
     self.__button_read = hippo.CanvasWidget(widget=theme.theme_widget(button))
     ret.append(self.__button_read)
-    button = gtk.Button(_('Make Jokebook'))
+    button = Gtk.Button(_('Make Jokebook'))
     button.connect('clicked', self.__do_clicked_make)
     self.__button_make = hippo.CanvasWidget(widget=theme.theme_widget(button))
     ret.append(self.__button_make)

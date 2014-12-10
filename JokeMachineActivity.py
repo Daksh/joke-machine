@@ -19,19 +19,20 @@
 #
 
 # init gthreads before using abiword
-import gobject
-gobject.threads_init()
+from gi.repository import GObject
+GObject.threads_init()
+
+from gi.repository import Gtk
 
 import os
 import logging
-import gtk
 
 from gettext import gettext as _
 import gettext
 import locale
 
 import hippo
-from sugar.activity import activity
+from sugar3.activity import activity
 
 from globals import Globals
 from gui.frame import Frame
@@ -47,9 +48,9 @@ import telepathy
 import telepathy.client
 from dbus import Interface
 from dbus.service import method, signal
-from dbus.gobject_service import ExportedGObject
-from sugar.presence.tubeconn import TubeConnection # deprecated ?! Gone from build >542 ? Ke ?
-from sugar.presence import presenceservice
+from dbus.GObject_service import ExportedGObject
+from sugar3.presence.tubeconn import TubeConnection # deprecated ?! Gone from build >542 ? Ke ?
+from sugar3.presence import presenceservice
 
 from mesh.activitysession import JokeMachineSession, MESH_IFACE, MESH_PATH, MESH_SERVICE
 
@@ -59,7 +60,7 @@ from persistence.jokemachinestate import JokeMachineState
 
 # TODO: Handle <= Build# 622 gracefully 
 try:
-  from sugar.graphics.alert import NotifyAlert
+  from sugar3.graphics.alert import NotifyAlert
 except ImportError:
   pass
 
@@ -87,13 +88,13 @@ class JokeMachineActivity(activity.Activity):
     #locale.setlocale(locale.LC_ALL, 'af')    
 
     # customize theme
-    gtkrc = os.path.join(Globals.pwd, 'resources/gtkrc')
-    if os.path.exists(gtkrc):
-      logging.debug("Loading resources from %s" % gtkrc)
-      gtk.rc_add_default_file(gtkrc)
-      settings = gtk.settings_get_default()
-      #gtk.rc_reset_styles(settings)
-      gtk.rc_reparse_all_for_settings(settings, True)
+    Gtkrc = os.path.join(Globals.pwd, 'resources/Gtkrc')
+    if os.path.exists(Gtkrc):
+      logging.debug("Loading resources from %s" % Gtkrc)
+      Gtk.rc_add_default_file(Gtkrc)
+      settings = Gtk.settings_get_default()
+      #Gtk.rc_reset_styles(settings)
+      Gtk.rc_reparse_all_for_settings(settings, True)
       logging.debug("Loading resources DONE")
 
     Globals.set_activity_instance(self)
@@ -102,11 +103,14 @@ class JokeMachineActivity(activity.Activity):
 
     # toolbox
     self.__toolbox = activity.ActivityToolbox(self)
-    self.set_toolbox(self.__toolbox)
+    stop_button = StopButton(self)
+    self.__toolbox.insert(stop_button, -1)
+    stop_button.show()
+    self.set_toolbar_box(self.__toolbox)
 
     # main activity frame
     self.__activity_frame = Frame()
-    vbox = gtk.VBox()
+    vbox = Gtk.VBox()
     vbox.pack_start(self.__activity_frame)
     vbox.show()
     self.set_canvas(vbox)
@@ -257,7 +261,7 @@ class JokeMachineActivity(activity.Activity):
                   id, initiator, type, service, params, state)
 
     if (type == telepathy.TUBE_TYPE_DBUS and service == MESH_SERVICE):
-      if state == telepathy.TUBE_STATE_LOCAL_PENDING:
+      if state == telepathy.TUBE.StateType.LOCAL_PENDING:
         self.tubes_chan[telepathy.CHANNEL_TYPE_TUBES].AcceptDBusTube(id)
 
       tube_conn = TubeConnection(self.__telepathy_connection,

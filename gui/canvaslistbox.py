@@ -18,10 +18,10 @@
 # own creations we would love to hear from you at info@WorldWideWorkshop.org !
 #
 
-import gtk
+from gi.repository import Gtk
 import hippo
 
-from sugar.graphics import style
+from sugar3.graphics import style
 
 from gui import theme
 from gui import page
@@ -38,20 +38,20 @@ class CanvasListBox(hippo.CanvasWidget):
     self._entries_div.props.padding=10
     self._entries_div.props.orientation=hippo.ORIENTATION_VERTICAL    
 
-    # Munge it all up into something we can stick into a gtk.ScrolledWindow
+    # Munge it all up into something we can stick into a Gtk.ScrolledWindow
     canvas = hippo.Canvas() 
     canvas.set_root(self._entries_div)
     canvas.show()
     
-    hbox = gtk.HBox()
-    hbox.set_flags(gtk.HAS_FOCUS | gtk.CAN_FOCUS)
+    hbox = Gtk.HBox()
+    hbox.set_flags(Gtk.HAS_FOCUS | Gtk.CAN_FOCUS)
     hbox.pack_start(canvas)
     hbox.show()
 
-    scroller = gtk.ScrolledWindow()
-    scroller.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
-    viewport = gtk.Viewport()
-    viewport.set_shadow_type(gtk.SHADOW_NONE) 
+    scroller = Gtk.ScrolledWindow()
+    scroller.set_policy(Gtk.POLICY_NEVER, Gtk.POLICY_AUTOMATIC)
+    viewport = Gtk.Viewport()
+    viewport.set_shadow_type(Gtk.SHADOW_NONE) 
     viewport.add(hbox)
     viewport.show()
     scroller.add(viewport)

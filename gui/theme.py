@@ -18,9 +18,9 @@
 # own creations we would love to hear from you at info@WorldWideWorkshop.org !
 #
 
-import gtk
+from gi.repository import Gtk
 
-from sugar.graphics import style
+from sugar3.graphics import style
 
 
 # This is all rather horrible - but it will keep us afloat while Sugar
@@ -47,32 +47,32 @@ COLOR_TEXT_FIELD_GREY = style.Color('#E5E5E5')
 
 
 COLOR_FG_BUTTONS = (
-  (gtk.STATE_NORMAL,      style.Color('#CCFF99')),
-  (gtk.STATE_ACTIVE,      style.Color('#CCFF99')),
-  (gtk.STATE_PRELIGHT,    style.Color('#CCFF99')),
-  (gtk.STATE_SELECTED,    style.Color('#CCFF99')),
-  (gtk.STATE_INSENSITIVE, style.Color('#CCFF99')),
+  (Gtk.StateType.NORMAL,      style.Color('#CCFF99')),
+  (Gtk.StateType.ACTIVE,      style.Color('#CCFF99')),
+  (Gtk.StateType.PRELIGHT,    style.Color('#CCFF99')),
+  (Gtk.StateType.SELECTED,    style.Color('#CCFF99')),
+  (Gtk.StateType.INSENSITIVE, style.Color('#CCFF99')),
 )
 COLOR_BG_BUTTONS = (
-  (gtk.STATE_NORMAL,      style.Color('#027F01')),
-  (gtk.STATE_ACTIVE,      style.Color('#014D01')),
-  (gtk.STATE_PRELIGHT,    style.Color('#016D01')),
-  (gtk.STATE_SELECTED,    style.Color('#027F01')),
-  (gtk.STATE_INSENSITIVE, style.Color('#027F01')),
+  (Gtk.StateType.NORMAL,      style.Color('#027F01')),
+  (Gtk.StateType.ACTIVE,      style.Color('#014D01')),
+  (Gtk.StateType.PRELIGHT,    style.Color('#016D01')),
+  (Gtk.StateType.SELECTED,    style.Color('#027F01')),
+  (Gtk.StateType.INSENSITIVE, style.Color('#027F01')),
 )
 COLOR_BG_RADIOBUTTONS = (
-  (gtk.STATE_NORMAL,      COLOR_LIGHT_GRAY),
-  (gtk.STATE_ACTIVE,      COLOR_LIGHT_GRAY),
-  (gtk.STATE_PRELIGHT,    COLOR_LIGHT_GRAY),
-  (gtk.STATE_SELECTED,    COLOR_LIGHT_GRAY),
-  (gtk.STATE_INSENSITIVE, COLOR_LIGHT_GRAY),
+  (Gtk.StateType.NORMAL,      COLOR_LIGHT_GRAY),
+  (Gtk.StateType.ACTIVE,      COLOR_LIGHT_GRAY),
+  (Gtk.StateType.PRELIGHT,    COLOR_LIGHT_GRAY),
+  (Gtk.StateType.SELECTED,    COLOR_LIGHT_GRAY),
+  (Gtk.StateType.INSENSITIVE, COLOR_LIGHT_GRAY),
 )
 COLOR_FG_RADIOBUTTONS = (
-  (gtk.STATE_NORMAL,      COLOR_DARK_GREEN),
-  (gtk.STATE_ACTIVE,      COLOR_DARK_GREEN),
-  (gtk.STATE_PRELIGHT,    COLOR_DARK_GREEN),
-  (gtk.STATE_SELECTED,    COLOR_DARK_GREEN),
-  (gtk.STATE_INSENSITIVE, COLOR_DARK_GREEN),
+  (Gtk.StateType.NORMAL,      COLOR_DARK_GREEN),
+  (Gtk.StateType.ACTIVE,      COLOR_DARK_GREEN),
+  (Gtk.StateType.PRELIGHT,    COLOR_DARK_GREEN),
+  (Gtk.StateType.SELECTED,    COLOR_DARK_GREEN),
+  (Gtk.StateType.INSENSITIVE, COLOR_DARK_GREEN),
 )
 
 
@@ -115,9 +115,9 @@ AUDIO_CHOOSE = 'resources/audio.png'
 
 # helpers ######################################################################
 
-# TODO - deprecate in favor of gtkrc
+# TODO - deprecate in favor of Gtkrc
 def theme_widget(widget, width=-1, height=-1, highlight=False):
-  """Apply colors to gtk Widgets
+  """Apply colors to Gtk Widgets
 
   widget         is the widget
   width, height  are optional width and height for resizing the widget
@@ -135,7 +135,7 @@ def theme_widget(widget, width=-1, height=-1, highlight=False):
 
   #for state, color in COLOR_BG_BUTTONS:
     #if highlight:
-      #widget.modify_bg(state, gtk.gdk.color_parse("#CCFF99"))
+      #widget.modify_bg(state, Gdk.color_parse("#CCFF99"))
     #else:
       #widget.modify_bg(state, color.get_gdk_color())
 

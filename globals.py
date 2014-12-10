@@ -21,7 +21,7 @@
 import os
 import logging
 import tempfile
-from sugar.activity import activity
+from sugar3.activity import activity
 try:
   from hashlib import sha1
 except ImportError:

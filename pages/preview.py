@@ -20,9 +20,9 @@
 
 
 import os
-import gtk
+from gi.repository import Gtk
 import hippo
-import pango
+from gi.repository import Pango
 import logging
 from gettext import gettext as _
 
@@ -64,7 +64,7 @@ class Preview(Page):
     
     self.append(hippo.CanvasBox(box_height=theme.SPACER_VERTICAL))
     
-    button = gtk.Button(_('Edit'))
+    button = Gtk.Button(_('Edit'))
     button.connect('clicked', self.__do_clicked_edit, jokebook)    
     self.append(hippo.CanvasWidget(widget=theme.theme_widget(button)))
 

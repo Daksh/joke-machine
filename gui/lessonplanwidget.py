@@ -20,14 +20,14 @@
 
 import os
 import locale
-import gtk
+from gi.repository import Gtk
 import logging
 from gettext import gettext as _
 
 from abiword import Canvas as AbiCanvas
 
 
-class LessonPlanWidget(gtk.Notebook):
+class LessonPlanWidget(Gtk.Notebook):
   
   def __init__ (self, basepath):
     """Create a Notebook widget for displaying lesson plans in tabs.
@@ -68,6 +68,6 @@ class LessonPlanWidget(gtk.Notebook):
     canvas.view_online_layout()
     canvas.zoom_width()
     canvas.set_show_margin(False)
-    self.append_page(canvas, gtk.Label(name))
+    self.append_page(canvas, Gtk.Label(name))
     
     
