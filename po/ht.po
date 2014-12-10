@@ -1,0 +1,309 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-08-04 13:32+0000\n"
+"PO-Revision-Date: 2011-08-10 06:06+0200\n"
+"Last-Translator: Chris <cjl@laptop.org>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n !=1);\n"
+"X-Generator: Pootle 2.0.1\n"
+
+#: JokeMachineActivity.py:137 activity/activity.info:2
+#: mesh/activitysession.py:170 mesh/activitysession.py:210
+msgid "Joke Machine"
+msgstr "Machin blag"
+
+#: JokeMachineActivity.py:137
+msgid "Please wait a moment for your buddy's Jokebooks to show up"
+msgstr "Pran yon ti tan pou ka montre liv blag patnè ou a"
+
+#: gui/frame.py:106 gui/frame.py:193
+msgid "Lesson Plans"
+msgstr "Plan Leson yo"
+
+#: gui/frame.py:124
+msgid "Read Jokebooks"
+msgstr "Li liv blag yo"
+
+#: gui/frame.py:128
+msgid "Make Jokebook"
+msgstr "Fè yon liv blag"
+
+#: gui/frame.py:197
+msgid "Close Lessons"
+msgstr "Fèmen Leson yo"
+
+#: gui/frame.py:201
+msgid "Lesson Plans:"
+msgstr "Plan Leson yo:"
+
+#: gui/page.py:108
+msgid "Click to choose a sound"
+msgstr "Klike pou chwazi yon son"
+
+#: gui/page.py:302
+msgid "Choose image"
+msgstr "Chwazi yon imaj"
+
+#: gui/page.py:334
+msgid "Choose Sound"
+msgstr "Chwazi yon son"
+
+#: mesh/activitysession.py:169
+msgid " submitted a joke to "
+msgstr " voye yon blag pou "
+
+#: mesh/activitysession.py:208
+msgid " accepted a joke submitted to "
+msgstr " dakò yon blag yo voye pou "
+
+#: mesh/activitysession.py:209
+msgid " by "
+msgstr " pa "
+
+#: pages/choose.py:46
+msgid "Choose a Jokebook to read:"
+msgstr "Chwazi yon liv blag pou li:"
+
+#: pages/choose.py:67
+msgid "Are you sure you want to delete your "
+msgstr "Eske ou si ke ou vle efase pa ou a "
+
+#: pages/choose.py:70
+msgid "jokebook ?"
+msgstr "liv blag ?"
+
+#: pages/choose.py:107 pages/preview.py:67
+msgid "Edit"
+msgstr "chanje"
+
+#: pages/choose.py:111 pages/edit.py:173
+msgid "Delete"
+msgstr "Efase"
+
+#: pages/cover.py:42 pages/preview.py:50
+msgid "started by"
+msgstr "Li te Kòmanse pa"
+
+#: pages/cover.py:53
+msgid "Open"
+msgstr "Louvri"
+
+#: pages/edit.py:59
+msgid "Edit Jokebook Cover"
+msgstr "Chanje po liv blag"
+
+#: pages/edit.py:67
+msgid "Edit My Jokes"
+msgstr "Chanje blag mwen yo"
+
+#: pages/edit.py:75
+msgid "Review Submitted Jokes"
+msgstr "Regade blag ou voye yo"
+
+#: pages/edit.py:119
+msgid "Preview"
+msgstr "Apèsi"
+
+#: pages/edit.py:144
+msgid "Title of Jokebook:"
+msgstr "Tit liv blag:"
+
+#: pages/edit.py:148
+msgid "Sound Effect:"
+msgstr "Efè son:"
+
+#: pages/edit.py:185
+msgid "Add New Joke"
+msgstr "Mete nouvo blag"
+
+#: pages/edit.py:196
+msgid "Are you sure you want to delete this joke ?"
+msgstr "Eske ou si ke ou vle efase blag sa a ?"
+
+#: pages/edit.py:237
+msgid "Reject"
+msgstr "Rejete"
+
+#: pages/edit.py:244
+msgid "Accept"
+msgstr "Dakò"
+
+#: pages/joke.py:61
+msgid "Joke"
+msgstr "Blag"
+
+#: pages/joke.py:63
+msgid "By"
+msgstr "Pa"
+
+#: pages/joke.py:72 pages/submit.py:65
+msgid "Question"
+msgstr "Kesyon"
+
+#: pages/joke.py:80 pages/joke.py:124 pages/submit.py:72
+msgid "Answer"
+msgstr "Repons"
+
+#: pages/joke.py:98
+msgid "This Jokebook is empty"
+msgstr "Liv blag sa a vid"
+
+#: pages/joke.py:100 pages/joke.py:160
+msgid "Submit a Joke"
+msgstr "Voye yon blag"
+
+#: pages/joke.py:105
+msgid "Add Jokes"
+msgstr "Mete blag yo"
+
+#: pages/joke.py:154
+msgid "Next"
+msgstr "Pwochen"
+
+#: pages/submit.py:93
+msgid "Submission For:"
+msgstr "Voye pou:"
+
+#: pages/submit.py:94
+msgid "Your Name:"
+msgstr "Non ou:"
+
+#: pages/submit.py:105
+msgid "Submit"
+msgstr "Voye"
+
+#: pages/submit.py:108
+msgid "Back"
+msgstr "Retounen"
+
+#~ msgid "Chinese (simplified)"
+#~ msgstr "Chinwa (senp)"
+
+#~ msgid "Chinese (traditional)"
+#~ msgstr "Chinwa (tradisyonel)"
+
+#~ msgid "Czech"
+#~ msgstr "Tchèk"
+
+#~ msgid "Danish"
+#~ msgstr "Danwa"
+
+#~ msgid "Dutch"
+#~ msgstr "Neyalandè"
+
+#~ msgid "Afrikaans"
+#~ msgstr "Afwiken"
+
+#~ msgid "English"
+#~ msgstr "Anglè"
+
+#~ msgid "English - Great Britain"
+#~ msgstr "Anglè - Grand-Bretay"
+
+#~ msgid "English - U.S."
+#~ msgstr "Anglè - Etazini"
+
+#~ msgid "Finnish"
+#~ msgstr "Finwa"
+
+#~ msgid "French"
+#~ msgstr "Franse"
+
+#~ msgid "German"
+#~ msgstr "Alman"
+
+#~ msgid "Hungarian"
+#~ msgstr "Ongwa"
+
+#~ msgid "Italian"
+#~ msgstr "Italyen"
+
+#~ msgid "Japanese"
+#~ msgstr "Japonè"
+
+#~ msgid "Korean"
+#~ msgstr "Koreyen"
+
+#~ msgid "Norwegian"
+#~ msgstr "Nòvegyen"
+
+#~ msgid "Polish"
+#~ msgstr "Polonè"
+
+#~ msgid "Portuguese"
+#~ msgstr "Pòtigè"
+
+#~ msgid "Portuguese - Brazilian"
+#~ msgstr "Pòtigè - Brezil"
+
+#~ msgid "Russian"
+#~ msgstr "Ris"
+
+#~ msgid "Slovak"
+#~ msgstr "Slovak"
+
+#~ msgid "Spanish"
+#~ msgstr "Pangnol"
+
+#~ msgid "Swedish"
+#~ msgstr "Suyedwa"
+
+#~ msgid "Turkish"
+#~ msgstr "Tik"
+
+#~ msgid "Lesson 1"
+#~ msgstr "Leson 1"
+
+#~ msgid "Lesson 2"
+#~ msgstr "Leson 2"
+
+#~ msgid "Lesson 3"
+#~ msgstr "Leson 3"
+
+#~ msgid "Lesson 4"
+#~ msgstr "Leson 4"
+
+#~ msgid "Introduction"
+#~ msgstr "Entrodiksyon"
