@@ -21,7 +21,6 @@
 
 import os
 from gi.repository import Gtk
-import hippo
 from gi.repository import Pango
 import logging
 from gettext import gettext as _
@@ -39,34 +38,33 @@ import pages.edit
 class Preview(Page):
   
   def __init__(self, jokebook):
-    Page.__init__(self, xalign=hippo.ALIGNMENT_CENTER)
+    Page.__init__(self) #fixme, args, xalign=hippo.ALIGNMENT_CENTER)
     
     preview_box = CanvasListBox()
     
     # cover
     cover = self.make_listrow()
-    cover.props.orientation=hippo.ORIENTATION_VERTICAL
-    cover.append(hippo.CanvasText(text='"' + (jokebook.title or '')+ '" ' +
-        _('started by') + ' ' + (jokebook.owner or ''),
-                                 xalign=hippo.ALIGNMENT_CENTER,
-                                 padding_top=10))
-    cover.append(hippo.CanvasBox(box_height=theme.SPACER_VERTICAL))      
+    cover.props.orientation= Gtk.Orientation.VERTICAL
+
+    cover.pack_start(Gtk.Label('"' + (jokebook.title or '')+ '" ' +
+        _('started by') + ' ' + (jokebook.owner or '')), False, False, 0)
+    # fixme, add cover.pack_start(hippo.CanvasBox(box_height=theme.SPACER_VERTICAL))      
     cover_picture = self.make_imagebox(jokebook, 'image', 480, 360, False)    
-    cover.append(cover_picture)
-    cover.append(hippo.CanvasBox(box_height=theme.SPACER_VERTICAL))
-    preview_box.append(cover)
+    cover.pack_start(cover_picture, False, False, 0)
+    # fixme, add cover.pack_start(hippo.CanvasBox(box_height=theme.SPACER_VERTICAL))
+    preview_box.pack_start(cover, False, False, 0)
     
     # jokes
     for joke in jokebook.jokes:
       list_row = self.make_listrow(JokeViewer(joke, jokebook.title))
-      preview_box.append(list_row)
-    self.append(preview_box, hippo.PACK_EXPAND)
+      preview_box.pack_start(list_row, False, False, 0)
+    self.pack_start(preview_box, True, True, 0)
     
-    self.append(hippo.CanvasBox(box_height=theme.SPACER_VERTICAL))
+    # fixme ,addself.pack_start(hippo.CanvasBox(box_height=theme.SPACER_VERTICAL))
     
     button = Gtk.Button(_('Edit'))
     button.connect('clicked', self.__do_clicked_edit, jokebook)    
-    self.append(hippo.CanvasWidget(widget=theme.theme_widget(button)))
+    self.pack_start(button, False, False, 0)
 
   
   def __do_clicked_edit(self, button, jokebook):

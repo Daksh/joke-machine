@@ -21,7 +21,6 @@
 
 import os
 from gi.repository import Gtk
-import hippo
 from gi.repository import Pango
 from gettext import gettext as _
 import logging
@@ -38,53 +37,37 @@ import persistence.joke
 class JokeViewer(Page):
 
   def __init__(self, joke, jokebook_title=''):
-    Page.__init__(self, 
-                  spacing=8,
+    Page.__init__(self) #,  Fixme, args.
+                  #spacing=8,
                   #background_color=theme.COLOR_PAGE.get_int(),
-                  padding=4,
-                  border_color=theme.COLOR_RED.get_int(),
-                  border=0,
-                  xalign=hippo.ALIGNMENT_START,
-                  orientation=hippo.ORIENTATION_HORIZONTAL)
+                  #padding=4,
+                  #border_color=theme.COLOR_RED.get_int(),
+                  #border=0,
+                  #xalign=hippo.ALIGNMENT_START,
+                  #orientation=hippo.ORIENTATION_HORIZONTAL)
 
     # left column 
-    self.left = hippo.CanvasBox(border=0,
-                                border_color=theme.COLOR_RED.get_int(),
-                                box_width=450,
-                                xalign=hippo.ALIGNMENT_START,
-                                orientation=hippo.ORIENTATION_VERTICAL)
+    self.left = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
     joke_image = self.make_imagebox(joke, 'image', 320, 240, False)
-    self.left.append(joke_image)
-    self.left.append(hippo.CanvasText(text=jokebook_title,
-                                      xalign=hippo.ALIGNMENT_START,
-                                      color=theme.COLOR_DARK_GREEN.get_int()))
-    self.left.append(hippo.CanvasText(text=_('Joke') + ' ' + str(joke.id),
-                                      xalign=hippo.ALIGNMENT_START))
-    self.left.append(hippo.CanvasText(text=_('By') + ' ' + str(joke.joker),
-                                      xalign=hippo.ALIGNMENT_START))
+    self.left.pack_start(joke_image, False, False, 0)
+    self.left.pack_start(Gtk.Label(jokebook_title), False, False, 0)
+    self.left.pack_start(Gtk.Label(_('Joke') + ' ' + str(joke.id)), False, False, 0)
+    self.left.pack_start(Gtk.Label(_('By') + ' ' + str(joke.joker)), False, False, 0)
 
     # right column 
-    self.right = hippo.CanvasBox(border=0,
-                                 border_color=theme.COLOR_RED.get_int(),
-                                 box_width=350,
-                                 xalign=hippo.ALIGNMENT_START,
-                                 orientation=hippo.ORIENTATION_VERTICAL)
-    self.right.append(hippo.CanvasText(text=_('Question'),
-                                       xalign=hippo.ALIGNMENT_START,
-                                       color=theme.COLOR_DARK_GREEN.get_int()))
-    self.right.append(self.make_bodytext(joke.text))
+    self.right = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+    self.right.pack_start(Gtk.Label(_('Question')), False, False, 0)
+    self.right.pack_start(self.make_bodytext(joke.text), False, False, 0)
 
-    self.right.append(hippo.CanvasBox(box_height=30)) # spacer
+    #fixme, add self.right.append(hippo.CanvasBox(box_height=30)) # spacer
 
-    self.answer_box = hippo.CanvasBox()
-    self.answer_box.append(hippo.CanvasText(text=_('Answer'),
-                                       xalign=hippo.ALIGNMENT_START,
-                                       color=theme.COLOR_DARK_GREEN.get_int()))
-    self.answer_box.append(self.make_bodytext(joke.answer))    
-    self.right.append(self.answer_box)
+    self.answer_box = Gtk.Box()
+    self.answer_box.pack_start(Gtk.Label(_('Answer')), False, False, 0)
+    self.answer_box.pack_start(self.make_bodytext(joke.answer), False, False, 0)    
+    self.right.pack_start(self.answer_box, False, False, 0)
 
-    self.append(self.left)
-    self.append(self.right)
+    self.pack_start(self.left, False, False, 0)
+    self.pack_start(self.right, False, False, 0)
 
 
 
@@ -99,13 +82,11 @@ class Joke(Page):
       if not Globals.JokeMachineActivity.is_initiator:
         button = Gtk.Button(_('Submit a Joke'))
         button.connect('clicked', self.__do_clicked_submit, jokebook, joke_id)        
-        self.append(hippo.CanvasWidget(widget=theme.theme_widget(button), 
-                                       padding_top=20))
+        self.pack_start(button, False, False, 20)
       else:
         button = Gtk.Button(_('Add Jokes'))
         button.connect('clicked', self.__do_clicked_add, jokebook, joke_id)        
-        self.append(hippo.CanvasWidget(widget=theme.theme_widget(button), 
-                                       padding_top=20))
+        self.pack_start(button, False, False, 20)
       return
       
     # the joke box
@@ -114,18 +95,14 @@ class Joke(Page):
     self.joke_box.answer_box.set_visible(False)
 
     # the navigation box
-    self.navigation_box = hippo.CanvasBox(
-      padding_right=8,
-      padding_top=8,
-      spacing=18,
-      orientation=hippo.ORIENTATION_HORIZONTAL)
+    self.navigation_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
 
     # the answer button
     button = Gtk.Button(_('Answer'))
     button.connect('clicked', self.__do_clicked_answer, jokebook, joke_id)        
-    self.navigation_box.append(hippo.CanvasWidget(widget=theme.theme_widget(button), padding_top=20))
-    self.joke_box.right.append(self.navigation_box)
-    self.append(self.joke_box)
+    self.navigation_box.pack_start(button, False, False, 0)
+    self.joke_box.right.pack_start(self.navigation_box, False, False, 0)
+    self.pack_start(self.joke_box, False, False, 0)
 
 
   # for forcing the joke into the answered state from page.submit
@@ -152,15 +129,15 @@ class Joke(Page):
     # check if there are any more jokes left
     if len(jokebook.jokes) > joke_id + 1:
       button = Gtk.Button(_('Next'))
-      button.connect('clicked', self.__do_clicked_next, jokebook, joke_id + 1)        
-      self.navigation_box.append(hippo.CanvasWidget(widget=theme.theme_widget(button), padding_right=10, padding_top=20))
-    
+      button.connect('clicked', self.__do_clicked_next, jokebook, joke_id + 1)  
+      self.navigation_box.pack_start(button, False, False, 0)      
+
+
     # only allow submitting a joke if activity is shared and you are the one joining
     if not Globals.JokeMachineActivity.is_initiator:
       button = Gtk.Button(_('Submit a Joke'))
       button.connect('clicked', self.__do_clicked_submit, jokebook, joke_id)        
-      self.navigation_box.append(hippo.CanvasWidget(widget=theme.theme_widget(button), 
-                                                    padding_top=20))
+      self.navigation_box.pack_start(button, False, False, 0)  
       
     
   def __do_clicked_add(self, button, jokebook, joke_id):

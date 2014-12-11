@@ -20,7 +20,6 @@
 
 from gi.repository import GObject
 from gi.repository import Gtk
-import hippo
 import logging
 
 from gettext import gettext as _
@@ -36,24 +35,25 @@ import pages.edit
 from persistence.jokebook import Jokebook
 from gui.lessonplanwidget import LessonPlanWidget
 
-class Frame(hippo.Canvas):
+class Frame(Gtk.Box):
   
   def __init__(self):
-    hippo.Canvas.__init__(self)
+    Gtk.Box.__init__(self)
     
     # Root Frame ###############################################################
     # Holds: Everything
-    self.__root = hippo.CanvasBox(
-      orientation=hippo.ORIENTATION_VERTICAL)
-    self.set_root(self.__root)
-    
+    self.set_orientation(Gtk.Orientation.VERTICAL)
+
     # Application Header #######################################################
     # Holds: App logo, language box, lessons plan box    
     self.__header = self.__make_header()
-    self.__root.append(self.__header)    
+    self.pack_start(self.__header, False, False, 0)    
     
     # Page Container ###########################################################
     # Holds: The currently open UI page
+    self.__container = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+    """
+    FIXME: SET ATTRIBUTES.
     self.__container = hippo.CanvasBox(border=theme.BORDER_WIDTH,
                                        border_color=theme.COLOR_FRAME.get_int(),
                                        background_color=theme.COLOR_BACKGROUND.get_int(),
@@ -63,35 +63,43 @@ class Frame(hippo.Canvas):
                                        padding_right=40,
                                        padding_bottom=20,
                                        orientation=hippo.ORIENTATION_VERTICAL)
-    self.__root.append(self.__container, hippo.PACK_EXPAND)
+    """
+    self.pack_start(self.__container, True, True, 0)
     
+
+    self.__page = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+    """
+    FIXME: SET ATTRIBUTES.
     self.__page = hippo.CanvasBox(background_color=theme.COLOR_PAGE.get_int(),
                                   border=4,
                                   border_color=theme.COLOR_PAGE_BORDER.get_int(), 
                                   spacing=8,      
                                   padding=20,
                                   orientation=hippo.ORIENTATION_VERTICAL)
-    self.__container.append(self.__page, hippo.PACK_EXPAND)
+    """
+    self.__container.pack_start(self.__page, True, True, 0)
     
     self.__page_class = None
     
     # Application Footer #######################################################
     # Holds: Task buttons
     self.__footer = self.__make_footer()
-    self.__container.append(self.__footer)
+    self.__container.pack_start(self.__footer, False, False, 0)
 
 
 
   def __make_header(self):
-    ret = hippo.CanvasBox(
-      orientation=hippo.ORIENTATION_HORIZONTAL)
+    ret = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
     
     # logo
     logo = Gtk.Image()
     logo.set_from_file(Globals.logo)
-    ret.append(hippo.CanvasWidget(widget=logo))
+    ret.pack_start(logo, False, False, 0)
     
     # lesson plans
+    lesson_plans = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+    """
+    FIXME: SET ATTRIBUTES.
     lesson_plans =  hippo.CanvasWidget(background_color=theme.COLOR_BACKGROUND.get_int(),
                                       border_top=theme.BORDER_WIDTH,
                                       border_left=theme.BORDER_WIDTH, 
@@ -103,32 +111,39 @@ class Frame(hippo.Canvas):
                                       padding_right=30,
                                       yalign=hippo.ALIGNMENT_CENTER,
                                       orientation=hippo.ORIENTATION_VERTICAL)
+    """
     button = Gtk.Button(_('Lesson Plans'))
     button.set_size_request(200, -1)
     button.active = False
     button.connect('clicked', self.__do_clicked_lessonplans)
-    lesson_plans.props.widget = theme.theme_widget(button)
-    ret.append(lesson_plans, hippo.PACK_EXPAND)
+    lesson_plans.pack_start(button, True, True, 0)
+    ret.pack_start(lesson_plans, True, True, 0)
     
     return ret
   
   
   
   def __make_footer(self):
+    ret = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+    """
+    FIXME: SET ATTRIBUTES.
     ret = hippo.CanvasBox(
       padding_right=8,
       padding_top=8,
       padding_bottom=0,
       spacing=8,
       orientation=hippo.ORIENTATION_HORIZONTAL)
+    """
     button = Gtk.Button(_('Read Jokebooks'))
     button.connect('clicked', self.__do_clicked_read)
-    self.__button_read = hippo.CanvasWidget(widget=theme.theme_widget(button))
-    ret.append(self.__button_read)
+    self.__button_read = button
+
+    ret.pack_start(button, False, False, 0)
+
     button = Gtk.Button(_('Make Jokebook'))
     button.connect('clicked', self.__do_clicked_make)
-    self.__button_make = hippo.CanvasWidget(widget=theme.theme_widget(button))
-    ret.append(self.__button_make)
+    self.__button_make = button
+    ret.pack_start(button, False, False, 0)
     return ret
  
 
@@ -148,7 +163,7 @@ class Frame(hippo.Canvas):
     def set(self, value): 
       self.__page_class = type(value)
       self.__page.clear()
-      self.__page.append(value, hippo.PACK_EXPAND)
+      self.__page.pack_start(value, True, True, 0)
 
       # some rules for the buttons in the footer
       if not Globals.JokeMachineActivity.is_initiator \
@@ -196,16 +211,12 @@ class Frame(hippo.Canvas):
     else:
       button.set_label(_('Close Lessons'))
       button.active = True
-      widget_box = hippo.CanvasBox(border=0,
-                                   border_color=theme.COLOR_BLUE.get_int())
-      widget_box.append(hippo.CanvasText(text= _('Lesson Plans:'),
-                                         xalign=hippo.ALIGNMENT_START,
-                                         padding=10))
+      widget_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+      widget_box.pack_start(Gtk.Label(_("Lesson Plans:")), False, False, 0)
+
       lesson_plans = LessonPlanWidget(Globals.pwd)
-      widget_box.append(hippo.CanvasWidget(widget=lesson_plans,
-                                           border=0,
-                                           border_color=theme.COLOR_DARK_GREEN.get_int()),
-                                           hippo.PACK_EXPAND)
+      widget_box.pack_start(lesson_plans, True, True, 0)
+
       self.page = widget_box
       self.__button_read.set_visible(False)
       self.__button_make.set_visible(False)            

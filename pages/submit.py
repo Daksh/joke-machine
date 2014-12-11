@@ -21,7 +21,6 @@
 
 import os
 from gi.repository import Gtk
-import hippo
 from gi.repository import Pango
 import logging
 from gettext import gettext as _
@@ -39,43 +38,50 @@ import pages.choose
 class JokeEditor(Page):
   
   def __init__(self, joke):
-    Page.__init__(self, 
-                  spacing=8,
-                  padding=4,
-                  border_color=theme.COLOR_RED.get_int(),
-                  border=0,
-                  orientation=hippo.ORIENTATION_HORIZONTAL)
+    Page.__init__(self) #, FIXME: set attribus   
+                  #spacing=8,
+                  #padding=4,
+                  #border_color=theme.COLOR_RED.get_int(),
+                  #border=0,
+                  #orientation=hippo.ORIENTATION_HORIZONTAL)
     
      # left column 
+    self.left = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+    """
+    FIXME: Set attributes
     self.left = hippo.CanvasBox(border=0,
                                 border_color=theme.COLOR_RED.get_int(),
                                 xalign=hippo.ALIGNMENT_START,
                                 orientation=hippo.ORIENTATION_VERTICAL,
                                 padding=theme.BORDER_WIDTH_CONTROL/2)
+    """
     joke_image = self.make_imagebox(joke, 'image', 320, 240, True)
-    self.left.append(joke_image)
+    self.left.pack_start(joke_image, False, False, 0)
     
     # right column 
+    """
+    FIXME: Set attributes"
     self.right = hippo.CanvasBox(border=0,
                                  border_color=theme.COLOR_RED.get_int(),
                                  padding=theme.SPACER_HORIZONTAL,
                                  orientation=hippo.ORIENTATION_VERTICAL,
                                  padding_bottom=theme.BORDER_WIDTH_CONTROL/2,
                                  spacing=theme.BORDER_WIDTH_CONTROL/2)
-    self.right.append(hippo.CanvasText(text=_('Question'),
-                                  xalign=hippo.ALIGNMENT_START,
-                                  color=theme.COLOR_DARK_GREEN.get_int()))
-    self.right.append(self.make_textbox(joke, 'text'))
+    """
+    self.right.pack_start(Gtk.Label(_('Question')), False, False, 0)
+    self.right.pack_start(self.make_textbox(joke, 'text'), False, False, 0)
 
-    self.right.append(hippo.CanvasBox(box_height=theme.SPACER_VERTICAL)) 
+#    self.right.append(hippo.CanvasBox(box_height=theme.SPACER_VERTICAL)) 
+
+    self.right.pack_start(Gtk.Label(_('Answer')), False, False, 0)
+# Fixme, set attribs
+#    self.right.append(hippo.CanvasText(text=_('Answer'),
+#                                  xalign=hippo.ALIGNMENT_START,
+#                                  color=theme.COLOR_DARK_GREEN.get_int()))
+    self.right.pack_start(self.make_textbox(joke, 'answer'), False, False, 0)
     
-    self.right.append(hippo.CanvasText(text=_('Answer'),
-                                  xalign=hippo.ALIGNMENT_START,
-                                  color=theme.COLOR_DARK_GREEN.get_int()))
-    self.right.append(self.make_textbox(joke, 'answer'))
-    
-    self.append(self.left)
-    self.append(self.right, hippo.PACK_EXPAND)
+    self.pack_start(self.left, False, False, 0)
+    self.pack_start(self.right, True, True, 0)
 
 
 class Submit(Page):
@@ -90,26 +96,27 @@ class Submit(Page):
     joke.joker = Globals.nickname
 
     # info
-    self.append(self.make_field(_('Submission For:'), 250, jokebook, 'title', 300, False))
-    self.append(self.make_field(_('Your Name:'),  250, joke, 'joker', 300, True))
+    self.pack_start(self.make_field(_('Submission For:'), 250, jokebook, 'title', 300, False), False, False, 0)
+    self.pack_start(self.make_field(_('Your Name:'),  250, joke, 'joker', 300, True), False, False, 0)
     
-    self.append(hippo.CanvasBox(box_height=theme.SPACER_VERTICAL)) # spacer
+    # FIXME: add me.
+    #self.append(hippo.CanvasBox(box_height=theme.SPACER_VERTICAL)) # spacer
 
     # joke editor
     jokebox = JokeEditor(joke)        
-    nav = hippo.CanvasBox(
-      padding_right=8,
-      padding_top=8,
-      spacing=18,
-      orientation=hippo.ORIENTATION_HORIZONTAL)
+    nav = Gtk.Box(Gtk.Orientation.HORIZONTAL)
     button = Gtk.Button(_('Submit'))
     button.connect('clicked', self.__do_clicked_submit, jokebook, joke)    
-    nav.append(hippo.CanvasWidget(widget=theme.theme_widget(button), padding_right=10, padding_top=20))
+    # FIXME: set attributes
+#    nav.append(hippo.CanvasWidget(widget=theme.theme_widget(button), padding_right=10, padding_top=20))
+    nav.pack_start(button, False, False, 0)
     button = Gtk.Button(_('Back'))
     button.connect('clicked', self.__do_clicked_back, jokebook, last_joke)    
-    nav.append(hippo.CanvasWidget(widget=theme.theme_widget(button), padding_top=20))
-    jokebox.right.append(nav)
-    self.append(jokebox)
+    # FIXME: set attributes
+#    nav.append(hippo.CanvasWidget(widget=theme.theme_widget(button), padding_top=20))
+    nav.pack_start(button, False, False, 0)
+    jokebox.right.pack_start(nav, False, False, 0)
+    self.pack_start(jokebox, False, False, 0)
 
 
   def __do_clicked_back(self, button, jokebook, last_joke):

@@ -23,7 +23,7 @@ import logging
 
 
 from dbus.service import method, signal
-from dbus.GObject_service import ExportedGObject
+from dbus.gobject_service import ExportedGObject
 
 
 from globals import Globals

@@ -20,7 +20,6 @@
 
 import os
 from gi.repository import Gtk
-import hippo
 from gi.repository import Pango
 import logging
 from gettext import gettext as _
@@ -43,16 +42,14 @@ class Choose(Page):
     Page.__init__(self)
 
     # page title
-    self.append(hippo.CanvasText(text= _('Choose a Jokebook to read:'),
-                                 xalign=hippo.ALIGNMENT_START,
-                                 padding=10))
+    self.pack_start(Gtk.Label(_('Choose a Jokebook to read:')), False, False, 0)
     
     # list of Jokebooks 
     allow_edit = Globals.JokeMachineActivity.is_initiator
     jokebooks_div = CanvasListBox()
     for jokebook in Globals.JokeMachineState.jokebooks:
-      jokebooks_div.append(self.__make_jokebook_div(jokebook, allow_edit))
-    self.append(jokebooks_div, hippo.PACK_EXPAND) 
+      jokebooks_div.pack_start(self.__make_jokebook_div(jokebook, allow_edit), False, False, 0)
+    self.pack_start(jokebooks_div, True, True, 0)
 
 
   def __do_clicked_title(self, control, event, jokebook):
@@ -88,38 +85,32 @@ class Choose(Page):
 
     # thumbnail
     thumbnail = self.make_imagebox(jokebook, 'image', 80, 60, False, 10)
-    list_row.append(self.__make_column_div(100, thumbnail))
+    list_row.pack_start(thumbnail, False, False, 0)
 
     # title
-    title = hippo.CanvasText(
-            text = (jokebook.title or '')+ "\n" + (jokebook.owner or ''), 
-                             padding_left = 20,                             
-                             xalign=hippo.ALIGNMENT_START,
-                             color=theme.COLOR_LINK.get_int())
-    title.set_clickable(True)
-    title.connect('button-press-event', self.__do_clicked_title, jokebook)    
-    list_row.append(self.__make_column_div(-1, title), hippo.PACK_EXPAND) 
+    title = Gtk.Label((jokebook.title or '')+ "\n" + (jokebook.owner or ''))
+    title_box = Gtk.EventBox()
+    title_box.add(title)
+    title_box.connect('button-press-event', self.__do_clicked_title, jokebook)    
+    list_row.pack_start(title_box, True, True, 0) 
     
-    list_row.append(hippo.CanvasBox(box_width=theme.SPACER_HORIZONTAL)) # TODO spacer    
+    # list_row.append(hippo.CanvasBox(box_width=theme.SPACER_HORIZONTAL)) # TODO spacer    
     
     # buttons
     if edit:
       button = Gtk.Button(_('Edit'))
       button.connect('clicked', self.__do_clicked_edit, jokebook)
-      list_row.append(self.__make_column_div(100, hippo.CanvasWidget(widget=theme.theme_widget(button))))
-      list_row.append(hippo.CanvasBox(box_width=theme.SPACER_HORIZONTAL)) # TODO spacer
+      list_row.pack_start(button, False, False, 0)
+
       button = Gtk.Button(_('Delete'))
       button.connect('clicked', self.__do_clicked_delete, jokebook)
-      list_row.append(self.__make_column_div(100, hippo.CanvasWidget(widget=theme.theme_widget(button))))
-      list_row.append(hippo.CanvasBox(box_width=theme.SPACER_HORIZONTAL)) # TODO spacer    
+      list_row.pack_start(button, False, False, 0)
 
     return list_row
 
 
   def __make_column_div(self, width, content):
-    ret = hippo.CanvasBox(
-      box_width=width,
-      yalign=hippo.ALIGNMENT_CENTER) 
+    ret = Gtk.Box()
     ret.append(content)
     return ret
 

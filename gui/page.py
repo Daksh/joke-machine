@@ -19,10 +19,9 @@
 #
 
 import os
-from gi.repository import Gtk
-import cairo # for getting png for CanvasImage
+from gi.repository import Gtk, GdkPixbuf
+from gi.repository import Gdk
 from gi.repository import Pango
-import hippo
 import logging
 import StringIO
 
@@ -30,16 +29,8 @@ from gettext import gettext as _
 
 from sugar3.graphics import style
 from sugar3.graphics.objectchooser import ObjectChooser
-from sugar3.import mime
+from sugar3 import mime
 
-# argh!
-try:
-  from sugar3.graphics.roundbox import RoundBox 
-except ImportError:
-  try:
-    from sugar3.graphics.roundbox import CanvasRoundBox as RoundBox
-  except ImportError:
-    from sugar3.graphics.canvasroundbox import CanvasRoundBox as RoundBox
 
 
 from util.persistence import Persistent, PersistentProperty
@@ -51,20 +42,20 @@ from gui import theme
 from globals import Globals
 
 
-THUMB_SIZE = min(Gdk.screen_width(), Gdk.screen_height()) / 2
+THUMB_SIZE = min(Gdk.Screen.width(), Gdk.Screen.height()) / 2
 
 
-class Page(hippo.CanvasBox):
+class Page(Gtk.Box):
 
   def __init__(self, **kwargs):
-    hippo.CanvasBox.__init__(self, **kwargs)
+    Gtk.Box.__init__(self, **kwargs)
     
     self.__alternate_color_listrows = False
     self.__color_listrow = theme.COLOR_LIST_ROW_ALT.get_int()
     
   
   def append(self, item, *args, **kwargs):
-    hippo.CanvasBox.append(self, item, *args, **kwargs)
+    self.pack_start(item, False, False, 0) # FIXME: No idea if works
     
     
   @property
@@ -94,12 +85,12 @@ class Page(hippo.CanvasBox):
     image_file = os.path.join(Globals.pwd, theme.AUDIO_CHOOSE)
     if not os.path.exists(image_file):
       logging.debug('cannot find %s' % image_file)
-      return hippo.CanvasBox()
+      return Gtk.Box()
     
-    surface = cairo.ImageSurface.create_from_png(image_file)
-    preview_sound = hippo.CanvasImage(image=surface,
-                                      xalign=hippo.ALIGNMENT_START,
-                                      yalign=hippo.ALIGNMENT_CENTER)
+    surface = GdkPixbuf.Pixbuf.new_from_file(image_file)
+    preview_sound_img = Gtk.Image.new_from_pixbuf(surface)
+    preview_sound = Gtk.EventBox()
+    preview_sound.add(preview_sound_img)
     preview_sound.connect('button-press-event', self.__do_clicked_preview_sound, obj, property)
     
     if hasattr(obj, property) and getattr(obj, property) != None:
@@ -107,26 +98,18 @@ class Page(hippo.CanvasBox):
     else:
       sound_name = _('Click to choose a sound')
     
-    choose_sound = hippo.CanvasText(text=sound_name, 
-                                    xalign=hippo.ALIGNMENT_START)
+    choose_sound_label = Gtk.Label(sound_name)
+    choose_sound = Gtk.EventBox()
+    choose_sound.add(choose_sound_label)
+
     choose_sound.connect('button-press-event', self.__do_clicked_choose_sound, obj, property)
     
-    sound_box = RoundBox()
-    sound_box.props.padding = 2
-    sound_box.props.spacing = 10
-    sound_box.props.box_width = width
-    sound_box.props.border=theme.BORDER_WIDTH_CONTROL / 2
-    sound_box.props.border_color=theme.COLOR_DARK_GREEN.get_int()
-    sound_box.props.background_color = theme.COLOR_WHITE.get_int()
-    sound_box.props.orientation=hippo.ORIENTATION_HORIZONTAL
-    sound_box.props.xalign=hippo.ALIGNMENT_START
-    sound_box.set_clickable(True)
-    sound_box.append(preview_sound)
-    sound_box.append(choose_sound)
+    sound_box = Gtk.Box()
+    sound_box.pack_start(prewiew_sound, False, False, 0)
+    sound_box.pack_start(choose_sound, False, False, 0)
+    sound_box.set_size_request(width, -1)
     
-    deglitch_box = hippo.CanvasBox(xalign=hippo.ALIGNMENT_START, box_width=width)
-    deglitch_box.append(sound_box)
-    return deglitch_box
+    return sound_box
     
 
   def make_imagebox(self, obj, property = None, width=-1, height=-1, editable=True, padding=0):
@@ -142,51 +125,37 @@ class Page(hippo.CanvasBox):
     try:
       if hasattr(obj, 'image_blob') and getattr(obj, 'image_blob') is not None:
         image_file = StringIO.StringIO(obj.image_blob)
-        surface = cairo.ImageSurface.create_from_png(image_file) 
+        surface = Gdk.Pixbuf.new_from_file_at_size(image_file, width, height) 
       else:
-        surface = cairo.ImageSurface.create_from_png(file_name) 
+        surface = Gdk.Pixbuf.new_from_file_at_size(file_name, width, height)
     except Exception, e:
       logging.error('Error while loading image: %r' % e)
       
-    # set border
-    if editable:
-      border_width = 0
-    else:
-      border_width = theme.BORDER_WIDTH_IMAGE
-      
+
     # the image itself
-    cover_image = hippo.CanvasImage(image=surface,
-                                    border=border_width,
-                                    border_color=theme.COLOR_BLACK.get_int(),
-                                    xalign=hippo.ALIGNMENT_CENTER,
-                                    yalign=hippo.ALIGNMENT_CENTER,
-                                    scale_width=width,
-                                    scale_height=height)
+    cover_image = Gtk.Image.new_from_pixbuf(surface)
+
     if editable:
       cover_image.set_clickable(True)
       cover_image.connect('button-press-event', self.__do_clicked_image, obj, 'image_blob')
-      image_box = RoundBox()
-      image_box.props.padding = 0
-      image_box.props.spacing = 0
-      image_box.props.border=theme.BORDER_WIDTH_CONTROL
-      image_box.props.border_color=theme.COLOR_DARK_GREEN.get_int()
-      image_box.append(cover_image)
+      image_box = Gtk.EventBox()
+      image_box.override_background_color(Gtk.StateType.NORMAL, theme.COLOR_DARK_GREEN.get_rgba())
+      image_box.add(cover_image)
     else:
       image_box = cover_image
       
-    # Grrr... RoundedBoxes and CanvasImages expand their width to their parent
-    # unless they're in a CanvasBox
-    deglitch_box = hippo.CanvasBox(xalign=hippo.ALIGNMENT_CENTER, padding=padding)
-    deglitch_box.append(image_box)
+
+    deglitch_box = Gtk.VBox()
+    deglitch_box.pack_start(image_box, False, False, 0)
     return deglitch_box
   
 
-  def make_bodytext(self, text, width=-1, xalign = hippo.ALIGNMENT_START, text_color = theme.COLOR_BLACK):
-    return hippo.CanvasText(text=text,
-                            size_mode=hippo.CANVAS_SIZE_WRAP_WORD,
-                            box_width=width,
-                            xalign=xalign,
-                            color=text_color.get_int())
+  def make_bodytext(self, text, width=-1, **args):
+    msg = Gtk.TextView()
+    text_buffer = msg.get_buffer()
+    text_buffer.set_text(text)
+    msg.set_buffer(text_buffer)
+    return msg
   
   
   def make_textbox(self, obj, property, width=300, height=100, editable=True):
@@ -198,30 +167,18 @@ class Page(hippo.CanvasBox):
  
   def make_field(self, label, label_width, obj, property, field_width, editable=True):
     value = self.__get_property_value(obj, property)
-    field_box = hippo.CanvasBox(orientation=hippo.ORIENTATION_HORIZONTAL,
-                                xalign=hippo.ALIGNMENT_START,
-                                spacing=10)
-    field_box.append(hippo.CanvasText(text=label,
-                                      box_width=label_width,
-                                      xalign=hippo.ALIGNMENT_START,
-                                      color=theme.COLOR_DARK_GREEN.get_int()))
-    #if editable:
+    field_box = Gtk.Box(Gtk.Orientation.HORIZONTAL)
+    label = Gtk.Label(label)
+    label.set_size_request(label_width, -1)
+    field_box.pack_start(label, False, False, 0)
+
     textfield = self.__textview(value, field_width, -1, editable, False) 
     textfield.control.get_buffer().connect('changed', self.__do_changed_control, obj, property)    
-    field_box.append(textfield)
-    #else: # TODO - move to __textview()
-      #glitch_box = CanvasBox(box_width=field_width)
-      #glitch_box.append(hippo.CanvasText(text=value,
-                                        #size_mode=hippo.CANVAS_SIZE_WRAP_WORD,
-                                        #box_width=field_width,
-                                        #xalign=hippo.ALIGNMENT_START))
-      #field_box.append(glitch_box)
+    field_box.pack_start(textfield, False, False, 0)
+
     return field_box
 
 
-  # Refactor into a CanvasTextView class
-  # TODO: Implement editable and multiline
-  # TODO: Lose multiline and change height variable to num_lines
   def __textview(self, text, width=300, height=-1, editable=True, multiline=False):
     textview = Gtk.TextView()
     textview.get_buffer().set_text(text)
@@ -244,28 +201,7 @@ class Page(hippo.CanvasBox):
     textview.set_border_window_size(Gtk.TEXT_WINDOW_BOTTOM, 0)
     textview.show()
     
-    if editable: # because rounded corners are well... pretty
-      border_box = RoundBox() 
-      border_box.control = textview    
-      border_box.props.padding = 2
-      border_box.props.spacing = 0
-      border_box.props.border=theme.BORDER_WIDTH_CONTROL / 2
-      border_box.props.border_color=theme.COLOR_DARK_GREEN.get_int()
-      border_box.props.background_color=theme.COLOR_TEXTBOX.get_int()
-      border_box.props.xalign=hippo.ALIGNMENT_START
-      #border_box.props.box_width = width
-      #border_box.props.box_height = height
-      
-      # TODO - File bug: RoundBox seriously messes with TextView's 
-      #                  (and other things) width !!
-      deglitch_box = hippo.CanvasBox() 
-      deglitch_box.append(hippo.CanvasWidget(widget=textview))
-      border_box.append(deglitch_box)
-      return border_box
-
-    no_edit_box = hippo.CanvasWidget(widget=textview)
-    no_edit_box.control = textview
-    return no_edit_box
+    return textview
 
 
   def __get_property_value(self, obj, property):
@@ -367,10 +303,10 @@ class Page(hippo.CanvasBox):
     player.play()
 
 def _load_image(file_name):
-    pixbuf = Gdk.pixbuf_new_from_file_at_size(file_name,
+    pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(file_name,
             THUMB_SIZE, THUMB_SIZE)
     if pixbuf is None:
         return None
     stream = StringIO.StringIO()
-    pixbuf.save_to_callback(lambda data: stream.write(data), 'png')
+    pixbuf.save_to_callbackv(lambda data: stream.write(data), 'png')
     return stream.getvalue()

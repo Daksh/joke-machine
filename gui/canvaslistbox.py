@@ -19,51 +19,30 @@
 #
 
 from gi.repository import Gtk
-import hippo
-
 from sugar3.graphics import style
-
-from gui import theme
-from gui import page
 
 
 # TODO- height seems bust
-class CanvasListBox(hippo.CanvasWidget):
+class CanvasListBox(Gtk.ScrolledWindow):
   def __init__(self):
-    self._entries_div = hippo.CanvasBox() 
+    Gtk.ScrolledWindow.__init__(self)
+    self._entries_div = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+    self._entries_div.set_spacing(style.DEFAULT_SPACING)
+    
 
     # props not set properly in constructor
-    self._entries_div.props.background_color=theme.COLOR_PAGE.get_int() 
-    self._entries_div.props.spacing=style.DEFAULT_SPACING    
+    """
+    self._entries_div.props.background_color=theme.COLOR_PAGE.get_int()   
     self._entries_div.props.padding=10
-    self._entries_div.props.orientation=hippo.ORIENTATION_VERTICAL    
+    FIXME: background_color = modify_bg(Gtk.StateType.NORMAL, color) <- get color.
+    no idea about padding.
 
-    # Munge it all up into something we can stick into a Gtk.ScrolledWindow
-    canvas = hippo.Canvas() 
-    canvas.set_root(self._entries_div)
-    canvas.show()
-    
-    hbox = Gtk.HBox()
-    hbox.set_flags(Gtk.HAS_FOCUS | Gtk.CAN_FOCUS)
-    hbox.pack_start(canvas)
-    hbox.show()
+    """
 
     scroller = Gtk.ScrolledWindow()
-    scroller.set_policy(Gtk.POLICY_NEVER, Gtk.POLICY_AUTOMATIC)
-    viewport = Gtk.Viewport()
-    viewport.set_shadow_type(Gtk.SHADOW_NONE) 
-    viewport.add(hbox)
-    viewport.show()
-    scroller.add(viewport)
-    scroller.show()
-
-    hippo.CanvasWidget.__init__(self, 
-                                widget=scroller, 
-                                padding=0, 
-                                spacing=0,
-                                border=1,
-                                border_color=theme.COLOR_DARK_GREEN.get_int())
-
+    self.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
+    self.add_with_viewport(self._entries_div)
+    self.show_all()
 
   def append(self, entry, *args):
     self._entries_div.append(entry, *args)

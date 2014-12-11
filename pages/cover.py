@@ -20,7 +20,6 @@
 
 import os
 from gi.repository import Gtk
-import hippo
 from gi.repository import Pango
 import logging
 from gettext import gettext as _
@@ -38,23 +37,20 @@ class Cover(Page):
     Page.__init__(self)
 
     # title
-    self.append(hippo.CanvasText(text='"' + (jokebook.title or '') + '" ' +
-        _('started by') + ' ' + (jokebook.owner or ''),
-                                 xalign=hippo.ALIGNMENT_CENTER,
-                                 padding_top=10))
-    self.append(hippo.CanvasBox(box_height=theme.SPACER_VERTICAL))      
+    text='"' + (jokebook.title or '') + '" ' + _('started by') + ' ' + (jokebook.owner or '')
+    self.pack_start(text, False, False, 0)
+    # fixme add self.append(hippo.CanvasBox(box_height=theme.SPACER_VERTICAL))      
 
     # cover picture 
     cover_picture = self.make_imagebox(jokebook, 'image', 480, 360, False)    
-    self.append(cover_picture, hippo.PACK_EXPAND)
-    self.append(hippo.CanvasBox(box_height=theme.SPACER_VERTICAL))
+    self.pack_start(cover_picture, True, True, 0)
+#    fixme add: self.append(hippo.CanvasBox(box_height=theme.SPACER_VERTICAL))
     
     # open button 
     button = Gtk.Button(_('Open'))
     button.connect('clicked', self.__do_clicked_open, jokebook)
     button.set_size_request(50, -1)
-    self.append(hippo.CanvasWidget(widget=theme.theme_widget(button),
-                                   box_width=50))
+    self.pack_start(button, False, False, 0)
 
   
   def __do_clicked_open(self, button, jokebook):

@@ -21,7 +21,6 @@
 
 import os
 from gi.repository import Gtk
-import hippo
 from gi.repository import Pango
 import logging
 from gettext import gettext as _
@@ -42,49 +41,37 @@ import persistence.joke
 
 
 
-class PageSelector(hippo.CanvasBox):
+class PageSelector(Gtk.Box):
   
   def __init__(self, parent, **kwargs):
-    hippo.CanvasBox.__init__(self, **kwargs)
+    Gtk.Box.__init__(self, **kwargs)
     self.__parent = parent
 
-    self.props.border = 1
-    self.props.border_color=theme.COLOR_TAB_ACTIVE.get_int()
-    self.props.background_color=theme.COLOR_PAGE.get_int()
-    self.props.orientation=hippo.ORIENTATION_VERTICAL
+    # self.props.border = 1
+    # self.props.border_color=theme.COLOR_TAB_ACTIVE.get_int()
+    # self.props.background_color=theme.COLOR_PAGE.get_int()
+    self.props.orientation=Gtk.Orientation.VERTICAL
     
-    tab_box = hippo.CanvasBox(background_color=theme.COLOR_TAB_SEPERATOR.get_int(),
-                                 spacing=2,
-                                 orientation=hippo.ORIENTATION_HORIZONTAL)
-    self.__tab_1 = hippo.CanvasText(text=_('Edit Jokebook Cover'),
-                                padding=theme.PADDING_TAB,
-                                xalign=hippo.ALIGNMENT_START,
-                                background_color=theme.COLOR_TAB_ACTIVE.get_int(),
-                                color=theme.COLOR_TAB_TEXT.get_int())
+    tab_box = Gtk.Box()
+    self.__tab_1 = Gtk.Label(_('Edit Jokebook Cover'))
     self.__tab_1.page = EditInfo
     self.__tab_1.connect('button-press-event', self.__do_clicked_tab)    
-    tab_box.append(self.__tab_1, hippo.PACK_EXPAND)
-    self.__tab_2 = hippo.CanvasText(text=_('Edit My Jokes'),
-                                padding=theme.PADDING_TAB,
-                                xalign=hippo.ALIGNMENT_START,
-                                background_color=theme.COLOR_TAB_INACTIVE.get_int(),
-                                color=theme.COLOR_TAB_TEXT.get_int())
+    tab_box.pack_start(self.__tab_1, True, True, 0)
+
+    self.__tab_2 = Gtk.Label(_("Edit My Jokes"))
     self.__tab_2.page = EditJokes
     self.__tab_2.connect('button-press-event', self.__do_clicked_tab)    
-    tab_box.append(self.__tab_2, hippo.PACK_EXPAND)
-    self.__tab_3 = hippo.CanvasText(text=_('Review Submitted Jokes'),
-                                padding=theme.PADDING_TAB,
-                                xalign=hippo.ALIGNMENT_START,
-                                background_color=theme.COLOR_TAB_INACTIVE.get_int(),
-                                color=theme.COLOR_TAB_TEXT.get_int())
+
+    tab_box.pack_start(self.__tab_2, True, True, 0)
+
+    self.__tab_3 = Gtk.Label(_('Review Submitted Jokes'))
     self.__tab_3.page = EditReview
     self.__tab_3.connect('button-press-event', self.__do_clicked_tab)    
-    tab_box.append(self.__tab_3, hippo.PACK_EXPAND)
-    self.append(tab_box)
+    tab_box.append(self.__tab_3, True, True, 0)
+    self.pack_start(tab_box, False, False, 0)
     
-    self.__page = hippo.CanvasBox(background_color=theme.COLOR_PAGE.get_int(),
-                                orientation=hippo.ORIENTATION_VERTICAL)
-    self.append(self.__page, hippo.PACK_EXPAND)
+    self.__page = Gtk.Box(Gtk.Orientation.VERTICAL)
+    self.pack_start(self.__page, True, True, 0)
     
     
   @Property
@@ -92,7 +79,7 @@ class PageSelector(hippo.CanvasBox):
     def get(self): return self.__page.the_page
     def set(self, value): 
       self.__page.clear()
-      self.__page.append(value, hippo.PACK_EXPAND)
+      self.__page.pack_start(value, True, True, 0)
       self.__page.the_page = value
     
     
@@ -113,12 +100,12 @@ class Edit(Page):
     self.__jokebook = jokebook    
     
     self.__page_selector = PageSelector(self)
-    self.append(self.__page_selector, hippo.PACK_EXPAND)
+    self.pack_start(self.__page_selector, True, True, 0)
     self.__page_selector.page = EditInfo(jokebook, self)
     
     button = Gtk.Button(_('Preview'))
     button.connect('clicked', self.__do_clicked_preview, jokebook)    
-    self.append(hippo.CanvasWidget(widget=theme.theme_widget(button), padding_top=theme.SPACER_VERTICAL))
+    self.pack_start(button, False, False, 0)
 
 
   def __do_clicked_preview(self, button, jokebook):
@@ -133,26 +120,23 @@ class Edit(Page):
 
 class EditInfo(Page): # TODO -> gui.Page should follow this pattern rather
   def __init__(self, jokebook, parent):
-    Page.__init__(self, xalign=hippo.ALIGNMENT_CENTER,
-                        orientation=hippo.ORIENTATION_VERTICAL,
-                        padding=20, 
-                        spacing=20)
+    Page.__init__(self)
     
     self.__parent = parent
     
     # page title
-    self.append(self.make_field(_('Title of Jokebook:'), 250, jokebook, 'title', 300, True))
+    self.pack_start(self.make_field(_('Title of Jokebook:'), 250, jokebook, 'title', 300, True), False, False, 0)
     #field = self.make_field(_('Sound Effect:'), 250, None, '', 300, False)
     
-    sound_effect = hippo.CanvasBox(orientation=hippo.ORIENTATION_HORIZONTAL, spacing=10)
-    sound_effect.append(self.make_bodytext(_('Sound Effect:'), 250, hippo.ALIGNMENT_START, theme.COLOR_DARK_GREEN))
-    sound_effect.append(self.make_audiobox(jokebook, 'sound', 316))
-    self.append(sound_effect)
+    sound_effect = Gtk.Box()
+    sound_effect.pack_start(self.make_bodytext(_('Sound Effect:'), 250, hippo.ALIGNMENT_START, theme.COLOR_DARK_GREEN), False, False, 0)
+    sound_effect.pack_start(self.make_audiobox(jokebook, 'sound', 316), False, False, 0)
+    self.pack_start(sound_effect, False, False, 0)
     
 
     # cover picture
     cover_image = self.make_imagebox(jokebook, 'image', 320, 240, True)
-    self.append(cover_image)
+    self.pack_start(cover_image, False, False, 0)
     
     # punchline sound
     #self.append(self.make_audiobox(jokebook, 'sound'))
@@ -172,20 +156,18 @@ class EditJokes(Page):
     for joke in jokebook.jokes:
       button = Gtk.Button(' ' + _('Delete') + ' ')
       button.connect('clicked', self.__do_clicked_delete, jokebook, joke)
-      list_row = self.make_listrow(JokeEditor(joke), hippo.PACK_EXPAND)
-      list_row.append(hippo.CanvasWidget(widget=theme.theme_widget(button),
-                                         padding=5),
-                      hippo.PACK_END)
-      jokes_div.append(list_row)
-    self.append(jokes_div, hippo.PACK_EXPAND)
+      list_row = self.make_listrow(JokeEditor(joke))
+      list_row.pack_end(button, False, False, 0)
+      jokes_div.pack_start(list_row, False, False, 0)
+
+    self.pack_start(jokes_div, True, True, 0)
     
     # new joke button
-    buttons = hippo.CanvasBox(orientation=hippo.ORIENTATION_HORIZONTAL,
-                              xalign=hippo.ALIGNMENT_START)
+    buttons = Gtk.Box()
     button = Gtk.Button(_('Add New Joke'))
     button.connect('clicked', self.do_clicked_add_joke, jokebook)    
-    buttons.append(hippo.CanvasWidget(widget=theme.theme_widget(button)))    
-    jokes_div.append(buttons)
+    buttons.pack_start(button, False, False, 0)    
+    jokes_div.pack_start(buttons, False, False, 0)
     
     
   def __do_clicked_delete(self, button, jokebook, joke):
@@ -227,50 +209,19 @@ class EditReview(Page):
     jokes_div.props.border=0
     for joke in jokebook.submissions:
       list_row = self.make_listrow(JokeViewer(joke, jokebook.title))
-      list_row.props.orientation=hippo.ORIENTATION_VERTICAL
+      list_row.props.orientation=Gtk.Orientation.VERTICAL
       
-      buttons = hippo.CanvasBox(orientation=hippo.ORIENTATION_HORIZONTAL,
-                                xalign=hippo.ALIGNMENT_END,
-                                spacing=10,
-                                padding=10)
+      buttons = Gtk.Box()
       
       button = Gtk.Button(' ' + _('Reject') + ' ')
       button.connect('clicked', self.__do_clicked_reject, jokebook, joke)
-      buttons.append(hippo.CanvasWidget(widget=theme.theme_widget(button),
-                                        border_color=theme.COLOR_RED.get_int(),
-                                        border=0,
-                                        xalign=hippo.ALIGNMENT_CENTER))
+      buttons.pack_start(button, False, False, 0)
 
       button = Gtk.Button(' ' + _('Accept') + ' ')
       button.connect('clicked', self.__do_clicked_accept, jokebook, joke)
-      buttons.append(hippo.CanvasWidget(widget=theme.theme_widget(button),
-                                        border_color=theme.COLOR_RED.get_int(),
-                                        border=0,
-                                        xalign=hippo.ALIGNMENT_CENTER))
+      buttons.pack_start(button, False, False, 0)
  
       list_row.append(buttons)
-      
-      #list_row.props.orientation=hippo.ORIENTATION_VERTICAL
-      #status_box = hippo.CanvasBox(orientation=hippo.ORIENTATION_HORIZONTAL,
-                                   #padding_top=4,
-                                   #padding_left=4)
-      #status_box.append(hippo.CanvasText(text=_('Status:'),
-                                  #color=theme.COLOR_DARK_GREEN.get_int(),
-                                  #box_width=100,
-                                  #xalign=hippo.ALIGNMENT_START))
-      ##button = None
-      #button = Gtk.RadioButton()
-      #button = Gtk.RadioButton(button, _('Approved'))
-      #button.set_size_request(200, -1)
-      #status_box.append(hippo.CanvasWidget(widget = button))
-      #button = Gtk.RadioButton(button, _('Rejected'))
-      #button.set_size_request(200, -1)
-      #status_box.append(hippo.CanvasWidget(widget = button))
-      #button = Gtk.RadioButton(button, _('Not Reviewed'))
-      #button.set_size_request(200, -1)
-      #button.set_active(True)
-      #status_box.append(hippo.CanvasWidget(widget = button))
-      #list_row.append(status_box)
       
       jokes_div.append(list_row)
       

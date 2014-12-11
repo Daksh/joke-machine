@@ -31,7 +31,6 @@ from gettext import gettext as _
 import gettext
 import locale
 
-import hippo
 from sugar3.activity import activity
 
 from globals import Globals
@@ -48,7 +47,7 @@ import telepathy
 import telepathy.client
 from dbus import Interface
 from dbus.service import method, signal
-from dbus.GObject_service import ExportedGObject
+from dbus.gobject_service import ExportedGObject
 from sugar3.presence.tubeconn import TubeConnection # deprecated ?! Gone from build >542 ? Ke ?
 from sugar3.presence import presenceservice
 
