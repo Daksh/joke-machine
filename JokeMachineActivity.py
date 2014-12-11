@@ -32,6 +32,7 @@ import gettext
 import locale
 
 from sugar3.activity import activity
+from sugar3.activity.widgets import ActivityToolbar, StopButton
 
 from globals import Globals
 from gui.frame import Frame
@@ -101,16 +102,16 @@ class JokeMachineActivity(activity.Activity):
     logging.debug("Starting the Joke Machine activity")
 
     # toolbox
-    self.__toolbox = activity.ActivityToolbox(self)
+    toolbox = ActivityToolbar(self)
     stop_button = StopButton(self)
-    self.__toolbox.insert(stop_button, -1)
+    toolbox.insert(stop_button, -1)
     stop_button.show()
-    self.set_toolbar_box(self.__toolbox)
+    self.set_toolbar_box(toolbox)
 
     # main activity frame
     self.__activity_frame = Frame()
     vbox = Gtk.VBox()
-    vbox.pack_start(self.__activity_frame)
+    vbox.pack_start(self.__activity_frame, True, True, 8)
     vbox.show()
     self.set_canvas(vbox)
     self.show_all()
@@ -136,15 +137,15 @@ class JokeMachineActivity(activity.Activity):
 
     # Check if we're joining another instance 
     self.__is_initiator = True
-    if self._shared_activity is not None:
+    if self.shared_activity is not None:
       self.alert(_('Joke Machine'), _('Please wait a moment for your buddy\'s Jokebooks to show up'))
       self.__is_initiator = False
-      logging.debug('shared:  %s' % self._shared_activity.props.joined)
+      logging.debug('shared:  %s' % self.shared_activity.props.joined)
       # We are joining the activity
       logging.debug('Joined activity')                      
       self.connect('joined', self.__do_activity_joined) 
-      self._shared_activity.connect('buddy-joined', self.__do_buddy_joined) 
-      self._shared_activity.connect('buddy-left', self.__do_buddy_left) 
+      self.shared_activity.connect('buddy-joined', self.__do_buddy_joined) 
+      self.shared_activity.connect('buddy-left', self.__do_buddy_left) 
       if self.get_shared():
         # We've already joined
         self.__do_activity_joined()
@@ -182,11 +183,11 @@ class JokeMachineActivity(activity.Activity):
     '''Setup the Tubes channel
     Called from: __do_activity_shared, __do_activity_joined.'''
 
-    if self._shared_activity is None:
+    if self.shared_activity is None:
       logging.error('Failed to share or join activity')
       return
 
-    bus_name, conn_path, channel_paths = self._shared_activity.get_channels()
+    bus_name, conn_path, channel_paths = self.shared_activity.get_channels()
 
     # Work out what our room is called and whether we have Tubes already
     room = None
@@ -237,11 +238,11 @@ class JokeMachineActivity(activity.Activity):
   def __do_activity_joined(self, activity):
     pass
     '''Callback for completion of joining the activity.'''
-    if not self._shared_activity:
+    if not self.shared_activity:
       return
 
     # Find out who's already in the shared activity:
-    for buddy in self._shared_activity.get_joined_buddies():
+    for buddy in self.shared_activity.get_joined_buddies():
       logging.debug('Buddy %s is already in the activity' % buddy.props.nick)
 
     logging.debug('Joined an existing shared activity')
@@ -311,11 +312,11 @@ class JokeMachineActivity(activity.Activity):
     self.__telepathy_initiating = True
     self.__setup() 
 
-    for buddy in self._shared_activity.get_joined_buddies():
+    for buddy in self.shared_activity.get_joined_buddies():
       logging.debug('Buddy %s is already in the activity' % buddy.props.nick)
 
-    self._shared_activity.connect('buddy-joined', self.__do_buddy_joined)
-    self._shared_activity.connect('buddy-left', self.__do_buddy_left)
+    self.shared_activity.connect('buddy-joined', self.__do_buddy_joined)
+    self.shared_activity.connect('buddy-left', self.__do_buddy_left)
 
     logging.debug('This is my activity: making a tube...')
     id = self.tubes_chan[telepathy.CHANNEL_TYPE_TUBES].OfferDBusTube(MESH_SERVICE, {})
