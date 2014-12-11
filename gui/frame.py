@@ -162,7 +162,7 @@ class Frame(Gtk.Box):
     def get(self): return self.__page
     def set(self, value): 
       self.__page_class = type(value)
-      self.__page.clear()
+      #self.__page.clear()
       self.__page.pack_start(value, True, True, 0)
 
       # some rules for the buttons in the footer
