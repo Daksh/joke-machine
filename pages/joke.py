@@ -37,16 +37,7 @@ import persistence.joke
 class JokeViewer(Page):
 
   def __init__(self, joke, jokebook_title=''):
-    Page.__init__(self) #,  Fixme, args.
-                  #spacing=8,
-                  #background_color=theme.COLOR_PAGE.get_int(),
-                  #padding=4,
-                  #border_color=theme.COLOR_RED.get_int(),
-                  #border=0,
-                  #xalign=hippo.ALIGNMENT_START,
-                  #orientation=hippo.ORIENTATION_HORIZONTAL)
-
-    # left column 
+    Page.__init__(self)
     self.left = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
     joke_image = self.make_imagebox(joke, 'image', 320, 240, False)
     self.left.pack_start(joke_image, False, False, 0)
@@ -58,8 +49,6 @@ class JokeViewer(Page):
     self.right = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
     self.right.pack_start(Gtk.Label(_('Question')), False, False, 0)
     self.right.pack_start(self.make_bodytext(joke.text), False, False, 0)
-
-    #fixme, add self.right.append(hippo.CanvasBox(box_height=30)) # spacer
 
     self.answer_box = Gtk.Box()
     self.answer_box.pack_start(Gtk.Label(_('Answer')), False, False, 0)

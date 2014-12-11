@@ -94,8 +94,6 @@ class Choose(Page):
     title_box.connect('button-press-event', self.__do_clicked_title, jokebook)    
     list_row.pack_start(title_box, True, True, 0) 
     
-    # list_row.append(hippo.CanvasBox(box_width=theme.SPACER_HORIZONTAL)) # TODO spacer    
-    
     # buttons
     if edit:
       button = Gtk.Button(_('Edit'))

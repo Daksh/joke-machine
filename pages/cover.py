@@ -39,12 +39,10 @@ class Cover(Page):
     # title
     text='"' + (jokebook.title or '') + '" ' + _('started by') + ' ' + (jokebook.owner or '')
     self.pack_start(text, False, False, 0)
-    # fixme add self.append(hippo.CanvasBox(box_height=theme.SPACER_VERTICAL))      
 
     # cover picture 
     cover_picture = self.make_imagebox(jokebook, 'image', 480, 360, False)    
     self.pack_start(cover_picture, True, True, 0)
-#    fixme add: self.append(hippo.CanvasBox(box_height=theme.SPACER_VERTICAL))
     
     # open button 
     button = Gtk.Button(_('Open'))

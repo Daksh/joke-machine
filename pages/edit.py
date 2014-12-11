@@ -141,7 +141,6 @@ class EditInfo(Page): # TODO -> gui.Page should follow this pattern rather
     # punchline sound
     #self.append(self.make_audiobox(jokebook, 'sound'))
     
-    
   
 class EditJokes(Page):
   

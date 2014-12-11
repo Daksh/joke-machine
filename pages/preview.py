@@ -38,7 +38,7 @@ import pages.edit
 class Preview(Page):
   
   def __init__(self, jokebook):
-    Page.__init__(self) #fixme, args, xalign=hippo.ALIGNMENT_CENTER)
+    Page.__init__(self)
     
     preview_box = CanvasListBox()
     
@@ -48,10 +48,10 @@ class Preview(Page):
 
     cover.pack_start(Gtk.Label('"' + (jokebook.title or '')+ '" ' +
         _('started by') + ' ' + (jokebook.owner or '')), False, False, 0)
-    # fixme, add cover.pack_start(hippo.CanvasBox(box_height=theme.SPACER_VERTICAL))      
+
     cover_picture = self.make_imagebox(jokebook, 'image', 480, 360, False)    
     cover.pack_start(cover_picture, False, False, 0)
-    # fixme, add cover.pack_start(hippo.CanvasBox(box_height=theme.SPACER_VERTICAL))
+
     preview_box.pack_start(cover, False, False, 0)
     
     # jokes
@@ -59,8 +59,6 @@ class Preview(Page):
       list_row = self.make_listrow(JokeViewer(joke, jokebook.title))
       preview_box.pack_start(list_row, False, False, 0)
     self.pack_start(preview_box, True, True, 0)
-    
-    # fixme ,addself.pack_start(hippo.CanvasBox(box_height=theme.SPACER_VERTICAL))
     
     button = Gtk.Button(_('Edit'))
     button.connect('clicked', self.__do_clicked_edit, jokebook)    

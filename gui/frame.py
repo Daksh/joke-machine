@@ -52,31 +52,10 @@ class Frame(Gtk.Box):
     # Page Container ###########################################################
     # Holds: The currently open UI page
     self.__container = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-    """
-    FIXME: SET ATTRIBUTES.
-    self.__container = hippo.CanvasBox(border=theme.BORDER_WIDTH,
-                                       border_color=theme.COLOR_FRAME.get_int(),
-                                       background_color=theme.COLOR_BACKGROUND.get_int(),
-                                       spacing=4,
-                                       padding_top=20, 
-                                       padding_left=40, 
-                                       padding_right=40,
-                                       padding_bottom=20,
-                                       orientation=hippo.ORIENTATION_VERTICAL)
-    """
     self.pack_start(self.__container, True, True, 0)
     
 
     self.__page = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-    """
-    FIXME: SET ATTRIBUTES.
-    self.__page = hippo.CanvasBox(background_color=theme.COLOR_PAGE.get_int(),
-                                  border=4,
-                                  border_color=theme.COLOR_PAGE_BORDER.get_int(), 
-                                  spacing=8,      
-                                  padding=20,
-                                  orientation=hippo.ORIENTATION_VERTICAL)
-    """
     self.__container.pack_start(self.__page, True, True, 0)
     
     self.__page_class = None
@@ -98,20 +77,6 @@ class Frame(Gtk.Box):
     
     # lesson plans
     lesson_plans = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-    """
-    FIXME: SET ATTRIBUTES.
-    lesson_plans =  hippo.CanvasWidget(background_color=theme.COLOR_BACKGROUND.get_int(),
-                                      border_top=theme.BORDER_WIDTH,
-                                      border_left=theme.BORDER_WIDTH, 
-                                      border_right=theme.BORDER_WIDTH, 
-                                      border_color=theme.COLOR_FRAME.get_int(),
-                                      padding_top=12, 
-                                      padding_bottom=12,
-                                      padding_left=30, 
-                                      padding_right=30,
-                                      yalign=hippo.ALIGNMENT_CENTER,
-                                      orientation=hippo.ORIENTATION_VERTICAL)
-    """
     button = Gtk.Button(_('Lesson Plans'))
     button.set_size_request(200, -1)
     button.active = False
@@ -125,15 +90,6 @@ class Frame(Gtk.Box):
   
   def __make_footer(self):
     ret = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-    """
-    FIXME: SET ATTRIBUTES.
-    ret = hippo.CanvasBox(
-      padding_right=8,
-      padding_top=8,
-      padding_bottom=0,
-      spacing=8,
-      orientation=hippo.ORIENTATION_HORIZONTAL)
-    """
     button = Gtk.Button(_('Read Jokebooks'))
     button.connect('clicked', self.__do_clicked_read)
     self.__button_read = button
