@@ -36,37 +36,37 @@ import pages.edit
 
 
 class Preview(Page):
-  
-  def __init__(self, jokebook):
-    Page.__init__(self)
-    
-    preview_box = CanvasListBox()
-    
-    # cover
-    cover = self.make_listrow()
-    cover.props.orientation= Gtk.Orientation.VERTICAL
 
-    cover.pack_start(Gtk.Label('"' + (jokebook.title or '')+ '" ' +
-        _('started by') + ' ' + (jokebook.owner or '')), False, False, 0)
+    def __init__(self, jokebook):
+        Page.__init__(self)
 
-    cover_picture = self.make_imagebox(jokebook, 'image', 480, 360, False)    
-    cover.pack_start(cover_picture, False, False, 0)
+        preview_box = CanvasListBox()
 
-    preview_box.pack_start(cover, False, False, 0)
-    
-    # jokes
-    for joke in jokebook.jokes:
-      list_row = self.make_listrow(JokeViewer(joke, jokebook.title))
-      preview_box.pack_start(list_row, False, False, 0)
-    self.pack_start(preview_box, True, True, 0)
-    
-    button = Gtk.Button(_('Edit'))
-    button.connect('clicked', self.__do_clicked_edit, jokebook)    
-    self.pack_start(button, False, False, 0)
+        # cover
+        cover = self.make_listrow()
+        cover.props.orientation = Gtk.Orientation.VERTICAL
 
-  
-  def __do_clicked_edit(self, button, jokebook):
-    Globals.JokeMachineActivity.set_page(pages.edit.Edit, jokebook)
- 
- 
- 
+        cover.pack_start(Gtk.Label('"' +
+                                   (jokebook.title or '') +
+                                   '" ' +
+                                   _('started by') +
+                                   ' ' +
+                                   (jokebook.owner or '')), False, False, 0)
+
+        cover_picture = self.make_imagebox(jokebook, 'image', 480, 360, False)
+        cover.pack_start(cover_picture, False, False, 0)
+
+        preview_box.pack_start(cover, False, False, 0)
+
+        # jokes
+        for joke in jokebook.jokes:
+            list_row = self.make_listrow(JokeViewer(joke, jokebook.title))
+            preview_box.pack_start(list_row, False, False, 0)
+        self.pack_start(preview_box, True, True, 0)
+
+        button = Gtk.Button(_('Edit'))
+        button.connect('clicked', self.__do_clicked_edit, jokebook)
+        self.pack_start(button, False, False, 0)
+
+    def __do_clicked_edit(self, button, jokebook):
+        Globals.JokeMachineActivity.set_page(pages.edit.Edit, jokebook)

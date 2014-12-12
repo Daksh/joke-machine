@@ -28,46 +28,47 @@ from gi.repository import Abi
 
 
 class LessonPlanWidget(Gtk.Notebook):
-  
-  def __init__ (self, basepath):
-    """Create a Notebook widget for displaying lesson plans in tabs.
 
-        basepath -- string, path of directory containing lesson plans.
-        """
-    super(LessonPlanWidget, self).__init__()
-    lessons = filter(lambda x: os.path.isdir(os.path.join(basepath, 'lessons', x)),
-                               os.listdir(os.path.join(basepath, 'lessons')))
-    lessons.sort()
-    for lesson in lessons:
-      self._load_lesson(os.path.join(basepath, 'lessons', lesson),
-                        _(lesson))
+    def __init__(self, basepath):
+        """Create a Notebook widget for displaying lesson plans in tabs.
 
+            basepath -- string, path of directory containing lesson plans.
+            """
+        super(LessonPlanWidget, self).__init__()
+        lessons = sorted(
+            filter(
+                lambda x: os.path.isdir(
+                    os.path.join(
+                        basepath, 'lessons', x)), os.listdir(
+                    os.path.join(
+                        basepath, 'lessons'))))
+        for lesson in lessons:
+            self._load_lesson(os.path.join(basepath, 'lessons', lesson),
+                              _(lesson))
 
-  def _load_lesson (self, path, name):
-    """Load the lesson content from a .abw, taking l10n into account.
+    def _load_lesson(self, path, name):
+        """Load the lesson content from a .abw, taking l10n into account.
 
-        path -- string, path of lesson plan file, e.g. lessons/Introduction
-        lesson -- string, name of lesson
-        """
-    code, encoding = locale.getdefaultlocale()
-    logging.debug('Locale code: %r' % code)
-    if code is None or encoding is None:
-      locale.setlocale(locale.LC_ALL, 'en_US')
-      code, encoding = locale.getlocale()
-    canvas = AbiCanvas()
-    canvas.show()
-    files = map(lambda x: os.path.join(path, '%s.abw' % x),
-                ('_'+code.lower(), '_'+code.split('_')[0].lower(), 
-                 'default'))
-    files = filter(lambda x: os.path.exists(x), files)
-    # On jhbuild, the first works, on XO image 432 the second works:
-    try:
-      canvas.load_file('file://%s' % files[0], 'application/x-abiword')
-    except:
-      canvas.load_file('file://%s' % files[0])
-    canvas.view_online_layout()
-    canvas.zoom_width()
-    canvas.set_show_margin(False)
-    self.append_page(canvas, Gtk.Label(name))
-    
-    
+            path -- string, path of lesson plan file, e.g. lessons/Introduction
+            lesson -- string, name of lesson
+            """
+        code, encoding = locale.getdefaultlocale()
+        logging.debug('Locale code: %r' % code)
+        if code is None or encoding is None:
+            locale.setlocale(locale.LC_ALL, 'en_US')
+            code, encoding = locale.getlocale()
+        canvas = AbiCanvas()
+        canvas.show()
+        files = map(lambda x: os.path.join(path, '%s.abw' % x),
+                    ('_' + code.lower(), '_' + code.split('_')[0].lower(),
+                     'default'))
+        files = filter(lambda x: os.path.exists(x), files)
+        # On jhbuild, the first works, on XO image 432 the second works:
+        try:
+            canvas.load_file('file://%s' % files[0], 'application/x-abiword')
+        except:
+            canvas.load_file('file://%s' % files[0])
+        canvas.view_online_layout()
+        canvas.zoom_width()
+        canvas.set_show_margin(False)
+        self.append_page(canvas, Gtk.Label(name))

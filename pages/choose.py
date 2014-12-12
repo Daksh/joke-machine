@@ -36,81 +36,90 @@ import pages.edit
 #from persistence.jokemachinestate import JokeMachineState
 #from persistence.jokebook import Jokebook
 
+
 class Choose(Page):
 
-  def __init__(self):
-    Page.__init__(self)
+    def __init__(self):
+        Page.__init__(self)
 
-    # page title
-    self.pack_start(Gtk.Label(_('Choose a Jokebook to read:')), False, False, 0)
-    
-    # list of Jokebooks 
-    allow_edit = Globals.JokeMachineActivity.is_initiator
-    jokebooks_div = CanvasListBox()
-    for jokebook in Globals.JokeMachineState.jokebooks:
-      jokebooks_div.pack_start(self.__make_jokebook_div(jokebook, allow_edit), False, False, 0)
-    self.pack_start(jokebooks_div, True, True, 0)
+        # page title
+        self.pack_start(
+            Gtk.Label(
+                _('Choose a Jokebook to read:')),
+            False,
+            False,
+            0)
 
+        # list of Jokebooks
+        allow_edit = Globals.JokeMachineActivity.is_initiator
+        jokebooks_div = CanvasListBox()
+        for jokebook in Globals.JokeMachineState.jokebooks:
+            jokebooks_div.pack_start(
+                self.__make_jokebook_div(
+                    jokebook,
+                    allow_edit),
+                False,
+                False,
+                0)
+        self.pack_start(jokebooks_div, True, True, 0)
 
-  def __do_clicked_title(self, control, event, jokebook):
-    Globals.JokeMachineActivity.set_page(pages.cover.Cover, jokebook)
-    
+    def __do_clicked_title(self, control, event, jokebook):
+        Globals.JokeMachineActivity.set_page(pages.cover.Cover, jokebook)
 
-  def __do_clicked_edit(self, button, jokebook):
-    Globals.JokeMachineActivity.set_page(pages.edit.Edit, jokebook)
+    def __do_clicked_edit(self, button, jokebook):
+        Globals.JokeMachineActivity.set_page(pages.edit.Edit, jokebook)
 
-    
-  def __do_clicked_delete(self, button, jokebook):
-    message = _('Are you sure you want to delete your ') 
-    if jokebook.title is not None:
-      message += '\'' + jokebook.title + '\' ' 
-    message += _('jokebook ?')
-    confirm = Gtk.MessageDialog(Globals.JokeMachineActivity, 
-                                Gtk.DIALOG_MODAL | Gtk.DIALOG_DESTROY_WITH_PARENT,
-                                Gtk.MESSAGE_QUESTION,
-                                Gtk.BUTTONS_YES_NO,
-                                message)
-    response = confirm.run()
-    confirm.hide()
-    confirm.destroy()
-    del confirm
-    if response == Gtk.RESPONSE_YES:
-      logging.debug('Deleting jokebook: %s' % jokebook.title)
-      Globals.JokeMachineState.jokebooks.remove(jokebook)
-      Globals.JokeMachineActivity.set_page(pages.choose.Choose)
-      
-    
-  def __make_jokebook_div(self, jokebook, edit = False):
-    list_row = self.make_listrow()
+    def __do_clicked_delete(self, button, jokebook):
+        message = _('Are you sure you want to delete your ')
+        if jokebook.title is not None:
+            message += '\'' + jokebook.title + '\' '
+        message += _('jokebook ?')
+        confirm = Gtk.MessageDialog(
+            Globals.JokeMachineActivity,
+            Gtk.DIALOG_MODAL | Gtk.DIALOG_DESTROY_WITH_PARENT,
+            Gtk.MESSAGE_QUESTION,
+            Gtk.BUTTONS_YES_NO,
+            message)
+        response = confirm.run()
+        confirm.hide()
+        confirm.destroy()
+        del confirm
+        if response == Gtk.RESPONSE_YES:
+            logging.debug('Deleting jokebook: %s' % jokebook.title)
+            Globals.JokeMachineState.jokebooks.remove(jokebook)
+            Globals.JokeMachineActivity.set_page(pages.choose.Choose)
 
-    # thumbnail
-    thumbnail = self.make_imagebox(jokebook, 'image', 80, 60, False, 10)
-    list_row.pack_start(thumbnail, False, False, 0)
+    def __make_jokebook_div(self, jokebook, edit=False):
+        list_row = self.make_listrow()
 
-    # title
-    title = Gtk.Label((jokebook.title or '')+ "\n" + (jokebook.owner or ''))
-    title_box = Gtk.EventBox()
-    title_box.add(title)
-    title_box.connect('button-press-event', self.__do_clicked_title, jokebook)    
-    list_row.pack_start(title_box, True, True, 0) 
-    
-    # buttons
-    if edit:
-      button = Gtk.Button(_('Edit'))
-      button.connect('clicked', self.__do_clicked_edit, jokebook)
-      list_row.pack_start(button, False, False, 0)
+        # thumbnail
+        thumbnail = self.make_imagebox(jokebook, 'image', 80, 60, False, 10)
+        list_row.pack_start(thumbnail, False, False, 0)
 
-      button = Gtk.Button(_('Delete'))
-      button.connect('clicked', self.__do_clicked_delete, jokebook)
-      list_row.pack_start(button, False, False, 0)
+        # title
+        title = Gtk.Label(
+            (jokebook.title or '') + "\n" + (jokebook.owner or ''))
+        title_box = Gtk.EventBox()
+        title_box.add(title)
+        title_box.connect(
+            'button-press-event',
+            self.__do_clicked_title,
+            jokebook)
+        list_row.pack_start(title_box, True, True, 0)
 
-    return list_row
+        # buttons
+        if edit:
+            button = Gtk.Button(_('Edit'))
+            button.connect('clicked', self.__do_clicked_edit, jokebook)
+            list_row.pack_start(button, False, False, 0)
 
+            button = Gtk.Button(_('Delete'))
+            button.connect('clicked', self.__do_clicked_delete, jokebook)
+            list_row.pack_start(button, False, False, 0)
 
-  def __make_column_div(self, width, content):
-    ret = Gtk.Box()
-    ret.append(content)
-    return ret
+        return list_row
 
-
-
+    def __make_column_div(self, width, content):
+        ret = Gtk.Box()
+        ret.append(content)
+        return ret

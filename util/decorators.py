@@ -22,48 +22,54 @@ import sys
 
 
 # Courtesy of: http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/465427
-DecoratorWithArgs = \
-  lambda decorator: lambda *args, **kwargs: lambda func: decorator(func, *args, **kwargs)
-
+DecoratorWithArgs = lambda decorator: lambda * \
+    args, **kwargs: lambda func: decorator(func, *args, **kwargs)
 
 
 def Property(function):
-  '''Property Decorator
-     Adapted from: http://wiki.python.org/moin/PythonDecoratorLibrary
+    '''Property Decorator
+       Adapted from: http://wiki.python.org/moin/PythonDecoratorLibrary
 
-     Example: 
-      
-        class Foo(object):
-          @Property
-          def my_property():
-            def get(self): return self.__my_property
-            def set(self, value): self.__my_property = value  # (optional)
-            def default(self): return 'some default value'    # (optional)
-  '''
-  
-  keys = 'set', 'del'
-  func_locals = {'doc':function.__doc__}
-  
-  def fgetter(obj, name, getter, fdef):
-    attr_name = '_' + obj.__class__.__name__ + '__' + name
-    if not hasattr(obj, attr_name):
-      setattr(obj, attr_name, fdef(obj))
-    return getter(obj)
-  
-  def introspect(frame, event, arg):
-    if event == 'return':
-      locals = frame.f_locals
-      func_locals.update(dict(('f' + k,locals.get(k)) for k in keys))
-      if locals.has_key('default'):
-        func_locals['fget'] = lambda obj : fgetter(obj, function.__name__, locals['get'], locals['default'])
-      else:
-        func_locals['fget'] = lambda obj : fgetter(obj, function.__name__, locals['get'], lambda x : None)
-      
-      sys.settrace(None)
-    return introspect
-  
-  sys.settrace(introspect)
-  function()
-  
-  return property(**func_locals)
+       Example:
 
+          class Foo(object):
+            @Property
+            def my_property():
+              def get(self): return self.__my_property
+              def set(self, value): self.__my_property = value  # (optional)
+              def default(self): return 'some default value'    # (optional)
+    '''
+
+    keys = 'set', 'del'
+    func_locals = {'doc': function.__doc__}
+
+    def fgetter(obj, name, getter, fdef):
+        attr_name = '_' + obj.__class__.__name__ + '__' + name
+        if not hasattr(obj, attr_name):
+            setattr(obj, attr_name, fdef(obj))
+        return getter(obj)
+
+    def introspect(frame, event, arg):
+        if event == 'return':
+            locals = frame.f_locals
+            func_locals.update(dict(('f' + k, locals.get(k)) for k in keys))
+            if 'default' in locals:
+                func_locals['fget'] = lambda obj: fgetter(
+                    obj,
+                    function.__name__,
+                    locals['get'],
+                    locals['default'])
+            else:
+                func_locals['fget'] = lambda obj: fgetter(
+                    obj,
+                    function.__name__,
+                    locals['get'],
+                    lambda x: None)
+
+            sys.settrace(None)
+        return introspect
+
+    sys.settrace(introspect)
+    function()
+
+    return property(**func_locals)

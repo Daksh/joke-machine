@@ -36,77 +36,103 @@ import pages.choose
 
 
 class JokeEditor(Page):
-  
-  def __init__(self, joke):
-    Page.__init__(self)
-    
-     # left column 
-    self.left = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-    joke_image = self.make_imagebox(joke, 'image', 320, 240, True)
-    self.left.pack_start(joke_image, False, False, 0)
-    
-    # right column 
-    self.right.pack_start(Gtk.Label(_('Question')), False, False, 0)
-    self.right.pack_start(self.make_textbox(joke, 'text'), False, False, 0)
 
-    self.right.pack_start(Gtk.Label(_('Answer')), False, False, 0)
+    def __init__(self, joke):
+        Page.__init__(self)
 
-    self.right.pack_start(self.make_textbox(joke, 'answer'), False, False, 0)
-    
-    self.pack_start(self.left, False, False, 0)
-    self.pack_start(self.right, True, True, 0)
+        # left column
+        self.left = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        joke_image = self.make_imagebox(joke, 'image', 320, 240, True)
+        self.left.pack_start(joke_image, False, False, 0)
+
+        # right column
+        self.right.pack_start(Gtk.Label(_('Question')), False, False, 0)
+        self.right.pack_start(self.make_textbox(joke, 'text'), False, False, 0)
+
+        self.right.pack_start(Gtk.Label(_('Answer')), False, False, 0)
+
+        self.right.pack_start(
+            self.make_textbox(
+                joke,
+                'answer'),
+            False,
+            False,
+            0)
+
+        self.pack_start(self.left, False, False, 0)
+        self.pack_start(self.right, True, True, 0)
 
 
 class Submit(Page):
-  
-  def __init__(self, jokebook, last_joke=0): # last_joke is for 'back' button
-    Page.__init__(self, spacing=10)
 
-    # create a new joke
-    joke = Joke() 
-    joke.id = jokebook.next_joke_id
-    logging.info('Created new joke with id: %d' % joke.id)
-    joke.joker = Globals.nickname
+    # last_joke is for 'back' button
+    def __init__(self, jokebook, last_joke=0):
+        Page.__init__(self, spacing=10)
 
-    # info
-    self.pack_start(self.make_field(_('Submission For:'), 250, jokebook, 'title', 300, False), False, False, 0)
-    self.pack_start(self.make_field(_('Your Name:'),  250, joke, 'joker', 300, True), False, False, 0)
+        # create a new joke
+        joke = Joke()
+        joke.id = jokebook.next_joke_id
+        logging.info('Created new joke with id: %d' % joke.id)
+        joke.joker = Globals.nickname
 
-    # joke editor
-    jokebox = JokeEditor(joke)        
-    nav = Gtk.Box(Gtk.Orientation.HORIZONTAL)
-    button = Gtk.Button(_('Submit'))
-    button.connect('clicked', self.__do_clicked_submit, jokebook, joke)    
+        # info
+        self.pack_start(
+            self.make_field(
+                _('Submission For:'),
+                250,
+                jokebook,
+                'title',
+                300,
+                False),
+            False,
+            False,
+            0)
+        self.pack_start(
+            self.make_field(
+                _('Your Name:'),
+                250,
+                joke,
+                'joker',
+                300,
+                True),
+            False,
+            False,
+            0)
 
-    nav.pack_start(button, False, False, 0)
-    button = Gtk.Button(_('Back'))
-    button.connect('clicked', self.__do_clicked_back, jokebook, last_joke)    
+        # joke editor
+        jokebox = JokeEditor(joke)
+        nav = Gtk.Box(Gtk.Orientation.HORIZONTAL)
+        button = Gtk.Button(_('Submit'))
+        button.connect('clicked', self.__do_clicked_submit, jokebook, joke)
 
-    nav.pack_start(button, False, False, 0)
-    jokebox.right.pack_start(nav, False, False, 0)
-    self.pack_start(jokebox, False, False, 0)
+        nav.pack_start(button, False, False, 0)
+        button = Gtk.Button(_('Back'))
+        button.connect('clicked', self.__do_clicked_back, jokebook, last_joke)
 
+        nav.pack_start(button, False, False, 0)
+        jokebox.right.pack_start(nav, False, False, 0)
+        self.pack_start(jokebox, False, False, 0)
 
-  def __do_clicked_back(self, button, jokebook, last_joke):
-    joke_page = Globals.JokeMachineActivity.set_page(pages.joke.Joke, jokebook, last_joke)
-    joke_page.force_answer(jokebook, last_joke) # force joke into answered state
+    def __do_clicked_back(self, button, jokebook, last_joke):
+        joke_page = Globals.JokeMachineActivity.set_page(
+            pages.joke.Joke,
+            jokebook,
+            last_joke)
+        joke_page.force_answer(
+            jokebook,
+            last_joke)  # force joke into answered state
 
+    def __do_clicked_submit(self, button, jokebook, joke):
 
-  def __do_clicked_submit(self, button, jokebook, joke):
+        Globals.JokeMachineActivity.set_page(pages.choose.Choose)
 
-    Globals.JokeMachineActivity.set_page(pages.choose.Choose)
-    
-    # TODO -> Factor out of the page ? Should be transparent to UI layer ?
-    if not Globals.JokeMachineActivity.is_shared:
-      logging.error('pages.submit.Submit -> CANNOT SUBMIT WITHOUT A TUBE')
-      return
-    
-    logging.debug('Submitting joke to remote')
-    pickle = joke.dumps()
-    Globals.JokeMachineActivity.tube.Submit(jokebook.id, pickle)
-    logging.debug('Submitted joke to remote')
-    
-    
-    
-    
+        # TODO -> Factor out of the page ? Should be transparent to UI layer ?
+        if not Globals.JokeMachineActivity.is_shared:
+            logging.error(
+                'pages.submit.Submit -> CANNOT SUBMIT WITHOUT A TUBE')
+            return
 
+        logging.debug('Submitting joke to remote')
+        pickle = joke.dumps()
+        Globals.JokeMachineActivity.tube.Submit(jokebook.id, pickle)
+        logging.debug('Submitted joke to remote')

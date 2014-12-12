@@ -24,26 +24,26 @@ from sugar3.graphics import style
 
 # TODO- height seems bust
 class CanvasListBox(Gtk.ScrolledWindow):
-  def __init__(self):
-    Gtk.ScrolledWindow.__init__(self)
-    self._entries_div = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-    self._entries_div.set_spacing(style.DEFAULT_SPACING)
-    
 
-    # props not set properly in constructor
-    """
-    self._entries_div.props.background_color=theme.COLOR_PAGE.get_int()   
+    def __init__(self):
+        Gtk.ScrolledWindow.__init__(self)
+        self._entries_div = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        self._entries_div.set_spacing(style.DEFAULT_SPACING)
+
+        # props not set properly in constructor
+        """
+    self._entries_div.props.background_color=theme.COLOR_PAGE.get_int()
     self._entries_div.props.padding=10
-    FIXME: background_color = modify_bg(Gtk.StateType.NORMAL, color) <- get color.
+    FIXME: background_color = modify_bg(Gtk.StateType.NORMAL, color) 
+    ^ get color.
     no idea about padding.
 
     """
 
-    scroller = Gtk.ScrolledWindow()
-    self.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
-    self.add_with_viewport(self._entries_div)
-    self.show_all()
+        scroller = Gtk.ScrolledWindow()
+        self.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
+        self.add_with_viewport(self._entries_div)
+        self.show_all()
 
-  def append(self, entry, *args):
-    self._entries_div.append(entry, *args)
-
+    def append(self, entry, *args):
+        self._entries_div.append(entry, *args)

@@ -32,27 +32,24 @@ import pages.joke
 
 
 class Cover(Page):
-  
-  def __init__(self, jokebook):
-    Page.__init__(self)
 
-    # title
-    text='"' + (jokebook.title or '') + '" ' + _('started by') + ' ' + (jokebook.owner or '')
-    self.pack_start(text, False, False, 0)
+    def __init__(self, jokebook):
+        Page.__init__(self)
 
-    # cover picture 
-    cover_picture = self.make_imagebox(jokebook, 'image', 480, 360, False)    
-    self.pack_start(cover_picture, True, True, 0)
-    
-    # open button 
-    button = Gtk.Button(_('Open'))
-    button.connect('clicked', self.__do_clicked_open, jokebook)
-    button.set_size_request(50, -1)
-    self.pack_start(button, False, False, 0)
+        # title
+        text = '"' + (jokebook.title or '') + '" ' + \
+            _('started by') + ' ' + (jokebook.owner or '')
+        self.pack_start(text, False, False, 0)
 
-  
-  def __do_clicked_open(self, button, jokebook):
-    Globals.JokeMachineActivity.set_page(pages.joke.Joke, jokebook)
- 
- 
- 
+        # cover picture
+        cover_picture = self.make_imagebox(jokebook, 'image', 480, 360, False)
+        self.pack_start(cover_picture, True, True, 0)
+
+        # open button
+        button = Gtk.Button(_('Open'))
+        button.connect('clicked', self.__do_clicked_open, jokebook)
+        button.set_size_request(50, -1)
+        self.pack_start(button, False, False, 0)
+
+    def __do_clicked_open(self, button, jokebook):
+        Globals.JokeMachineActivity.set_page(pages.joke.Joke, jokebook)

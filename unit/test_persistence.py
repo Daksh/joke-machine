@@ -25,18 +25,17 @@ sys.path.append('..')
 
 from persistence.jokemachinestate import JokeMachineState
 
-def dump(obj, indent = '  '):
-  print indent + str(obj)
-  for name, prop in obj.__properties__:
-    value = prop.fget(obj)
-    print indent + name, '=', value #, ' "' + prop.__doc__ + '"'
-    if value.__class__ is list:
-      for item in value:
-        dump(item, indent + '  ')
 
-  print indent + 'is_dirty =', obj.__dirty__
+def dump(obj, indent='  '):
+    print indent + str(obj)
+    for name, prop in obj.__properties__:
+        value = prop.fget(obj)
+        print indent + name, '=', value  # , ' "' + prop.__doc__ + '"'
+        if value.__class__ is list:
+            for item in value:
+                dump(item, indent + '  ')
 
-
+    print indent + 'is_dirty =', obj.__dirty__
 
 
 state = JokeMachineState().test_data()
@@ -48,6 +47,4 @@ print state.next_jokebook_id
 
 #pickle = state.dumps()
 #new_state = JokeMachineState.loads(pickle)
-#dump(new_state)
-
-
+# dump(new_state)

@@ -18,35 +18,34 @@
 # own creations we would love to hear from you at info@WorldWideWorkshop.org !
 #
 
-import pickle 
+import pickle
 
 
 class JournalPickler:
-  '''Works with util.Persistence to persist objects to the Sugar Journal'''
-  
-  def __init__(self, obj = None):
-    pass
 
-  def __set_dirty(self, obj, is_dirty):
-    obj.__dirty__ = False 
-    for name, prop in obj.__properties__:
-      if prop.fget(obj).__class__ is list:
-        for item in prop.fget(obj):
-          if hasattr(item, '__dirty__'):
-            self.__set_dirty(item, is_dirty)
+    '''Works with util.Persistence to persist objects to the Sugar Journal'''
+
+    def __init__(self, obj=None):
+        pass
+
+    def __set_dirty(self, obj, is_dirty):
+        obj.__dirty__ = False
+        for name, prop in obj.__properties__:
+            if prop.fget(obj).__class__ is list:
+                for item in prop.fget(obj):
+                    if hasattr(item, '__dirty__'):
+                        self.__set_dirty(item, is_dirty)
+
+    def dumps(self, obj, deep_dump):
+        self.__set_dirty(obj, False)
+        pickled = pickle.dumps(obj)
+        return pickled
+
+    def loads(self, pickled):
+        obj = pickle.loads(pickled)
+        self.__set_dirty(obj, False)
+        return obj
 
 
-  def dumps(self, obj, deep_dump):
-    self.__set_dirty(obj, False)
-    pickled = pickle.dumps(obj)
-    return pickled
-
-  
-  def loads(self, pickled):
-    obj = pickle.loads(pickled)
-    self.__set_dirty(obj, False)
-    return obj
-
-
-dumps = lambda obj, deep=False : JournalPickler(obj).dumps(obj, deep)
+dumps = lambda obj, deep=False: JournalPickler(obj).dumps(obj, deep)
 loads = JournalPickler().loads

@@ -77,9 +77,9 @@ class __globals(object):
     def tmpdir(self):
         '''Temporary directory - currently this exists for the sole purpose of
         having a place to dump sounds and images into so we don't have to keep
-        them in memory - don't know if this will still be valid under bitfrost,
-        don't know if sounds and images can be pulled directly out of the journal
-        when needing to be (dis)played'''
+        them in memory - don't know if this will still be valid under 
+        bitfrost, don't know if sounds and images can be pulled directly out 
+        of the journal when needing to be (dis)played'''
         logging.debug('Temp dir is %s' % os.path.join(self.__root, 'tmp'))
         return os.path.join(self.__root, 'tmp')
 
@@ -94,10 +94,11 @@ class __globals(object):
     @property
     def JokeMachineState(self):
         if not self.__activity_state:
-            # Okay - When app is not run from Journal activity.read_file() is never
-            # called, which means we never call Globals.set_activity_state so we
-            # create a default state here:
-            logging.debug('Globals.JokeMachineState() - creating default data')
+            # Okay - When app is not run from Journal activity.read_file() is
+            # never called, which means we never call 
+            # Globals.set_activity_state so we create a default state here:
+            logging.debug('Globals.JokeMachineState() - \
+                          creating default data')
             # TODO - implement JokeMachineState.new()
             self.__activity_state = JokeMachineState().test_data()
         return self.__activity_state
@@ -107,7 +108,8 @@ class __globals(object):
         if not self.__activity:
             # todo log this!!
             logging.debug(
-                'no activity set! - use Globals.set_activity_instance to register activity with Global manager')
+                "no activity set! - use Globals.set_activity_instance to"
+                " register activity with Global manager")
             return None
         return self.__activity
 

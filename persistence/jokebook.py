@@ -22,75 +22,117 @@ from util.persistence import Persistent, PersistentProperty
 
 
 class Jokebook(object):
-  __metaclass__ = Persistent 
-  
-  @PersistentProperty
-  def id():
-    '''object id'''
-    def default(self): return 0
-    def get(self): return self.__id
-    def set(self, value): self.__id = value
+    __metaclass__ = Persistent
 
-  @PersistentProperty
-  def title():
-    '''the title of this jokebook'''
-    def get(self): return self.__title
-    def set(self, value): self.__title = value
-    
-  @PersistentProperty
-  def image():
-    '''the cover image of this jokebook'''
-    def get(self): return self.__image
-    def set(self, value): self.__image = value
+    @PersistentProperty
+    def id():
+        '''object id'''
 
-  @PersistentProperty
-  def image_blob():
-    '''raw image data'''
-    def get(self): return self.__image_blob
-    def set(self, value): self.__image_blob = value
-    
-  @PersistentProperty
-  def sound():
-    '''the sound we must play on punchline'''
-    def get(self): return self.__sound
-    def set(self, value): self.__sound = value
+        def default(self):
+            return 0
 
-  @PersistentProperty
-  def sound_blob():
-    '''raw data for the sound'''
-    def get(self): return self.__sound_blob
-    def set(self, value): self.__sound_blob = value    
+        def get(self):
+            return self.__id
 
-  @PersistentProperty
-  def owner():
-    '''the owner of this jokebook'''
-    def get(self): return self.__owner
-    def set(self, value): self.__owner = value
+        def set(self, value):
+            self.__id = value
 
-  @PersistentProperty
-  def jokes():
-    '''the jokes in the jokebook'''
-    def default(self): return []
-    def get(self): return self.__jokes
+    @PersistentProperty
+    def title():
+        '''the title of this jokebook'''
 
-  @PersistentProperty
-  def submissions():
-    '''jokes submitted to this jokebook pending approval'''
-    def default(self): return []
-    def get(self): return self.__submissions
+        def get(self):
+            return self.__title
 
-  @PersistentProperty
-  def show():
-    '''should this jokebook be visible to others'''
-    def default(self): return False
-    def get(self): return self.__show
-    def set(self, value): self.__show = value
-    
-  # TODO - this should really be transparent
-  @property
-  def next_joke_id(self):
-    if len(self.jokes) == 0:
-      return 1
-    return max([joke.id for joke in self.jokes]) + 1
-  
-  
+        def set(self, value):
+            self.__title = value
+
+    @PersistentProperty
+    def image():
+        '''the cover image of this jokebook'''
+
+        def get(self):
+            return self.__image
+
+        def set(self, value):
+            self.__image = value
+
+    @PersistentProperty
+    def image_blob():
+        '''raw image data'''
+
+        def get(self):
+            return self.__image_blob
+
+        def set(self, value):
+            self.__image_blob = value
+
+    @PersistentProperty
+    def sound():
+        '''the sound we must play on punchline'''
+
+        def get(self):
+            return self.__sound
+
+        def set(self, value):
+            self.__sound = value
+
+    @PersistentProperty
+    def sound_blob():
+        '''raw data for the sound'''
+
+        def get(self):
+            return self.__sound_blob
+
+        def set(self, value):
+            self.__sound_blob = value
+
+    @PersistentProperty
+    def owner():
+        '''the owner of this jokebook'''
+
+        def get(self):
+            return self.__owner
+
+        def set(self, value):
+            self.__owner = value
+
+    @PersistentProperty
+    def jokes():
+        '''the jokes in the jokebook'''
+
+        def default(self):
+            return []
+
+        def get(self):
+            return self.__jokes
+
+    @PersistentProperty
+    def submissions():
+        '''jokes submitted to this jokebook pending approval'''
+
+        def default(self):
+            return []
+
+        def get(self):
+            return self.__submissions
+
+    @PersistentProperty
+    def show():
+        '''should this jokebook be visible to others'''
+
+        def default(self):
+            return False
+
+        def get(self):
+            return self.__show
+
+        def set(self, value):
+            self.__show = value
+
+    # TODO - this should really be transparent
+    @property
+    def next_joke_id(self):
+        if len(self.jokes) == 0:
+            return 1
+        return max([joke.id for joke in self.jokes]) + 1

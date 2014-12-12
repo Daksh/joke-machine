@@ -52,7 +52,8 @@ from dbus.gobject_service import ExportedGObject
 from sugar3.presence.tubeconn import TubeConnection
 from sugar3.presence import presenceservice
 
-from mesh.activitysession import JokeMachineSession, MESH_IFACE, MESH_PATH, MESH_SERVICE
+from mesh.activitysession import JokeMachineSession, MESH_IFACE
+from mesh.activitysession import MESH_PATH, MESH_SERVICE
 
 # needed to unpickle state from journal
 from persistence.jokemachinestate import JokeMachineState
@@ -82,7 +83,9 @@ class JokeMachineActivity(activity.Activity):
         # TODO - clean -  install gettext
         os.chdir(Globals.pwd)  # required for i18n.py to work
         #gettext.install('JokeMachine', './po', unicode=True)
-        #presLan_af = gettext.translation("JokeMachine", os.path.join(Globals.pwd, 'po'), languages=['af'])
+        # presLan_af = gettext.translation(
+        #    "JokeMachine", os.path.join(Globals.pwd, 'po'),
+        #     languages=['af'])
         # presLan_af.install()
         #locale.setlocale(locale.LC_ALL, 'af')
 
@@ -140,7 +143,8 @@ class JokeMachineActivity(activity.Activity):
         if self.shared_activity is not None:
             self.alert(
                 _('Joke Machine'),
-                _('Please wait a moment for your buddy\'s Jokebooks to show up'))
+                _("Please wait a moment for your buddy\'s"
+                	" Jokebooks to show up"))
             self.__is_initiator = False
             logging.debug('shared:  %s' % self.shared_activity.props.joined)
             # We are joining the activity
@@ -192,7 +196,8 @@ class JokeMachineActivity(activity.Activity):
             logging.error('Failed to share or join activity')
             return
 
-        bus_name, conn_path, channel_paths = self.shared_activity.get_channels()
+        bus_name = self.shared_activity.get_channels()
+        conn_path, channel_paths = self.shared_activity.get_channels()
 
         # Work out what our room is called and whether we have Tubes already
         room = None
@@ -227,10 +232,11 @@ class JokeMachineActivity(activity.Activity):
             return
         if tubes_chan is None:
             logging.debug('Presence service did not create a tubes channel')
-            # okay - we're going to try requesting one because this always fails on
+            # okay - we're going to try 
+            #        requesting one because this always fails on
             # build# <= 622
             logging.debug(
-                'TODO - DEPRECATE: TRYING TO REQUEST A TUBES CHANNEL')
+                "TODO - DEPRECATE: TRYING TO REQUEST A TUBES CHANNEL")
             tubes_chan = self.__telepathy_connection.request_channel(
                 telepathy.CHANNEL_TYPE_TUBES,
                 telepathy.HANDLE_TYPE_ROOM,
@@ -238,7 +244,8 @@ class JokeMachineActivity(activity.Activity):
                 True)
             if tubes_chan is None:
                 logging.debug(
-                    'TODO - DEPRECATE: FAILED TO REQUEST A TUBES CHANNEL - QUITTING')
+                    "TODO - DEPRECATE: FAILED TO REQUEST A"
+                    " TUBES CHANNEL - QUITTING")
                 return
             logging.debug(
                 'TODO - DEPRECATE: MANAGED TO REQUEST A TUBES CHANNEL')
@@ -275,7 +282,8 @@ class JokeMachineActivity(activity.Activity):
     def _new_tube_cb(self, id, initiator, type, service, params, state):
         '''Callback for when we have a Tube.'''
         logging.debug(
-            'New tube: ID=%d initator=%d type=%d service=%s params=%r state=%d',
+            "New tube: ID=%d initator=%d type=%d"
+            " service=%s params=%r state=%d",
             id,
             initiator,
             type,
@@ -290,7 +298,8 @@ class JokeMachineActivity(activity.Activity):
 
             tube_conn = TubeConnection(
                 self.__telepathy_connection, self.tubes_chan[
-                    telepathy.CHANNEL_TYPE_TUBES], id, group_iface=self.text_chan[
+                    telepathy.CHANNEL_TYPE_TUBES], id, 
+                    group_iface=self.text_chan[
                     telepathy.CHANNEL_INTERFACE_GROUP])
 
             logging.info('Starting a new JokeMachineSession')
@@ -309,7 +318,8 @@ class JokeMachineActivity(activity.Activity):
         if my_csh == cs_handle:
             handle = self.__telepathy_connection.GetSelfHandle()
             logging.debug('CS handle %u belongs to me, %u', cs_handle, handle)
-        elif group.GetGroupFlags() & telepathy.CHANNEL_GROUP_FLAG_CHANNEL_SPECIFIC_HANDLES:
+        elif group.GetGroupFlags() & \
+             telepathy.CHANNEL_GROUP_FLAG_CHANNEL_SPECIFIC_HANDLES:
             handle = group.GetHandleOwners([cs_handle])[0]
             logging.debug('CS handle %u belongs to %u', cs_handle, handle)
         else:
@@ -370,12 +380,14 @@ class JokeMachineActivity(activity.Activity):
 
     @property
     def is_initiator(self):
-        '''True if I'm the one joining an activity which was shared by someone else'''
+        '''True if I'm the one joining an activity 
+           which was shared by someone else'''
         ret = self.__is_initiator
         logging.debug('Getting is_initiator for activity: %r', ret)
         return ret
 
-    # ############################################################################
+    # #################################
+    ###########################################
 
     def refresh(self):
         '''reload the current page'''
@@ -413,7 +425,8 @@ class JokeMachineActivity(activity.Activity):
         pickle = f.read()
         if len(pickle) == 0:
             logging.debug(
-                'Activity.read_file() -> Journal has empty pickle - creating empty state')
+                "Activity.read_file() -> Journal has empty pickle"
+                " - creating empty state")
             activity_state = JokeMachineState().test_data()
         else:
             logging.debug('Unpickling state from Journal')
