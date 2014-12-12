@@ -84,11 +84,11 @@ class PageSelector(Gtk.Box):
 
     def __do_clicked_tab(self, control, event):
         self.__tab_1.props.background_color = \
-        theme.COLOR_TAB_INACTIVE.get_int()
+            theme.COLOR_TAB_INACTIVE.get_int()
         self.__tab_2.props.background_color = \
-        theme.COLOR_TAB_INACTIVE.get_int()
+            theme.COLOR_TAB_INACTIVE.get_int()
         self.__tab_3.props.background_color = \
-        theme.COLOR_TAB_INACTIVE.get_int()
+            theme.COLOR_TAB_INACTIVE.get_int()
         control.props.background_color = theme.COLOR_TAB_ACTIVE.get_int()
         self.__parent.do_tab_clicked(control.page)
 
@@ -136,7 +136,8 @@ class EditInfo(Page):  # TODO -> gui.Page should follow this pattern rather
             False,
             False,
             0)
-        #field = self.make_field(_('Sound Effect:'), 250, None, '', 300, False)
+        # field = self.make_field(_('Sound Effect:'),
+        #                         250, None, '', 300, False)
 
         sound_effect = Gtk.Box()
         sound_effect.pack_start(
@@ -163,7 +164,7 @@ class EditInfo(Page):  # TODO -> gui.Page should follow this pattern rather
         self.pack_start(cover_image, False, False, 0)
 
         # punchline sound
-        #self.append(self.make_audiobox(jokebook, 'sound'))
+        # self.append(self.make_audiobox(jokebook, 'sound'))
 
 
 class EditJokes(Page):

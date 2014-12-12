@@ -33,8 +33,8 @@ from gui import theme
 import pages.cover
 import pages.edit
 
-#from persistence.jokemachinestate import JokeMachineState
-#from persistence.jokebook import Jokebook
+# from persistence.jokemachinestate import JokeMachineState
+# from persistence.jokebook import Jokebook
 
 
 class Choose(Page):

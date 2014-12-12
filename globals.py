@@ -77,8 +77,8 @@ class __globals(object):
     def tmpdir(self):
         '''Temporary directory - currently this exists for the sole purpose of
         having a place to dump sounds and images into so we don't have to keep
-        them in memory - don't know if this will still be valid under 
-        bitfrost, don't know if sounds and images can be pulled directly out 
+        them in memory - don't know if this will still be valid under
+        bitfrost, don't know if sounds and images can be pulled directly out
         of the journal when needing to be (dis)played'''
         logging.debug('Temp dir is %s' % os.path.join(self.__root, 'tmp'))
         return os.path.join(self.__root, 'tmp')
@@ -95,7 +95,7 @@ class __globals(object):
     def JokeMachineState(self):
         if not self.__activity_state:
             # Okay - When app is not run from Journal activity.read_file() is
-            # never called, which means we never call 
+            # never called, which means we never call
             # Globals.set_activity_state so we create a default state here:
             logging.debug('Globals.JokeMachineState() - \
                           creating default data')

@@ -43,7 +43,7 @@ class JokeMachineSession(ExportedGObject):
         """Initialise the PollSession.
 
             tube -- TubeConnection
-            is_initiator -- boolean, True = we are sharing, 
+            is_initiator -- boolean, True = we are sharing,
             False = we are joining
             get_buddy -- function
             activity -- JokeMachine (sugar.activity.Activity)
@@ -61,7 +61,7 @@ class JokeMachineSession(ExportedGObject):
 
     @signal(dbus_interface=MESH_IFACE, signature='')
     def Hello(self):
-        """Signal to request that my UpdatePoll method is 
+        """Signal to request that my UpdatePoll method is
         called to let me know about
         other known polls."""
 
@@ -80,8 +80,8 @@ class JokeMachineSession(ExportedGObject):
         logging.debug('Sending %s my state' % sender)
         state_pickle = Globals.JokeMachineState.dumps()
         logging.debug('PICKLE TYPE: %r (hello_cb)' % type(state_pickle))
-        #state_pickle = ('This is my tubes message being sent to %s' % sender)
-        #logging.debug('PICKLE TYPE: %r (hello_cb)' % type(state_pickle))
+        # state_pickle = ('This is my tubes message being sent to %s' % sender)
+        # logging.debug('PICKLE TYPE: %r (hello_cb)' % type(state_pickle))
         self.tube.get_object(
             sender,
             MESH_PATH).PumpActivityState(
@@ -97,8 +97,8 @@ class JokeMachineSession(ExportedGObject):
             out_signature='')
     def PumpActivityState(self, state_pickle):
         state_pickle = str(state_pickle)
-        #logging.info("I JUST RECEIVED PICKLE TYPE: %r -"
-        #             " %s (PumpActivityState)", 
+        # logging.info("I JUST RECEIVED PICKLE TYPE: %r -"
+        #             " %s (PumpActivityState)",
         #             type(state_pickle), state_pickle)
         if len(state_pickle) == 0:
             logging.debug(
@@ -116,7 +116,7 @@ class JokeMachineSession(ExportedGObject):
         Globals.JokeMachineActivity.refresh()
         logging.debug('Finished receiving state')
 
-    # c -> I am the connecting buddy, 
+    # c -> I am the connecting buddy,
     # I can send some state back here if I want
     @signal(dbus_interface=MESH_IFACE, signature='s')
     def HelloBack(self, recipient):
@@ -263,10 +263,10 @@ class JokeMachineSession(ExportedGObject):
                 # Set buddy's polls to not active so I can't vote on them
                 # for poll in self.activity._polls:
                 # if poll.author == buddy.props.nick:
-                #poll.active = False
+                # poll.active = False
                 # logging.debug(
-                #'Closing poll %s of %s who just left.' %
-                #(poll.title, poll.author))
+                # 'Closing poll %s of %s who just left.' %
+                # (poll.title, poll.author))
 
         if not self.entered:
             if self.is_initiator:

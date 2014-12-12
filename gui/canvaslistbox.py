@@ -34,7 +34,7 @@ class CanvasListBox(Gtk.ScrolledWindow):
         """
     self._entries_div.props.background_color=theme.COLOR_PAGE.get_int()
     self._entries_div.props.padding=10
-    FIXME: background_color = modify_bg(Gtk.StateType.NORMAL, color) 
+    FIXME: background_color = modify_bg(Gtk.StateType.NORMAL, color)
     ^ get color.
     no idea about padding.
 

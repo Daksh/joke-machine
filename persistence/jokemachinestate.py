@@ -85,7 +85,7 @@ class JokeMachineState(object):
             jokebook.id = jokebook_id
             jokebook.owner = 'hummingbird'
             jokebook.title = 'Jokebook ' + str(jokebook.id)
-            #jokebook.image = 'images/smile-big.png'
+            # jokebook.image = 'images/smile-big.png'
             for joke_id in range(1, num_jokes + 1):
                 joke = Joke().test_data()
                 joke.id = joke_id

@@ -1,4 +1,4 @@
-#!/usr/bin/python
+# !/usr/bin/python
 #
 # Copyright 2007 World Wide Workshop Foundation
 #
@@ -24,7 +24,6 @@
 import sys
 sys.path.append('..')
 
-#import json
 import cPickle
 
 from persistence.joke import Joke
@@ -41,7 +40,7 @@ from util.decorators import Property
 from util.audioplayer import AudioPlayer
 
 audio = AudioPlayer()
-#audio.uri = '/home/antoine/Projects/dev.laptop.org/sugar-jhbuild/ \
+# audio.uri = '/home/antoine/Projects/dev.laptop.org/sugar-jhbuild/ \
 #              build/share/activities/JokeMachine.activity/resources/ \
 #              laugh_attack.wav'
 audio.uri = '/home/antoine/Projects/dev.laptop.org/sugar-jhbuild/ \
@@ -52,35 +51,35 @@ sys.exit()
 
 # class Foo(object):
 
-#@Property
+# @Property
 # def all():
-#def get(self): return self.__all
-#def set(self, value): self.__all = value
-#def default(self): return 'this is a default value'
+# def get(self): return self.__all
+# def set(self, value): self.__all = value
+# def default(self): return 'this is a default value'
 
-#@Property
+# @Property
 # def onlyget():
-#def get(self): return self.__onlyget
+# def get(self): return self.__onlyget
 
-#@Property
+# @Property
 # def nodefault():
-#def get(self): return self.__nodefault
-#def set(self, value): self.__nodefault = value
+# def get(self): return self.__nodefault
+# def set(self, value): self.__nodefault = value
 
 
 # help(Property)
-#foo = Foo()
+# foo = Foo()
 
 # print foo.all
-#Foo.all = 'changed'
+# Foo.all = 'changed'
 # print foo.all
 
 # print foo.nodefault
-#foo.nodefault = 'set now'
+# foo.nodefault = 'set now'
 # print foo.nodefault
 
 # print foo.onlyget
-#foo.onlyget = 'cannot set this'
+# foo.onlyget = 'cannot set this'
 
 
 def f(x):
@@ -181,8 +180,8 @@ def dump(obj, indent='  '):
 state = JokeMachineState()
 state = state.test_data()
 dump(state)
-print "\n=================================="
-      "======================================\n"
+print "\n==================================" \
+    "======================================\n"
 pickle = state.dumps()
 j = JokeMachineState.loads(pickle)
 jokebook = j.jokebooks[0]
@@ -234,18 +233,18 @@ j.id = 991
 
 dump(jokebook)
 
-print "===================================="
-      "====================================\n"
+print "====================================" \
+    "====================================\n"
 
 # ##############################################################################
 # test Pickling
 #
-#jokebook.__dirty__ = False
-#jokebook.jokes[0].__dirty__ = False
+# jokebook.__dirty__ = False
+# jokebook.jokes[0].__dirty__ = False
 
 p = cPickle.dumps(jokebook)
 # print p
-#o = cPickle.loads(p)
+# o = cPickle.loads(p)
 
 # dump(o)
 # dump(o.jokes[0])
@@ -268,17 +267,17 @@ dump(j)
 
 
 # json
-#p = json.write(j.__dict__)
+# p = json.write(j.__dict__)
 # print p
-#d = json.read(p)
-#o = Joke()
-#o.__dict__ = d
+# d = json.read(p)
+# o = Joke()
+# o.__dict__ = d
 # print o.id
 
 # pickle
-#p = cPickle.dumps(j)
+# p = cPickle.dumps(j)
 # print p
-#o = cPickle.loads(p)
+# o = cPickle.loads(p)
 # print o.id
 # print o.some_prop
 # print o.fn()
@@ -289,41 +288,41 @@ dump(j)
 # def __init__(cls, name, bases, dct):
 # print 'Init is called: ' + str(cls) + str(name) + str(bases) + str(dct)
 
-#method_list = []
+# method_list = []
 # for func in dct.values():
 # try:
-#method_name = func._dbus_method_name()
+# method_name = func._dbus_method_name()
 # print func, method_name
 # method_list.append(method_name)
 # except:
 # pass
 
 # print method_list
-#super(meta, cls).__init__(name, bases, dct)
+# super(meta, cls).__init__(name, bases, dct)
 
 # def method(func):
 # def decorator(self, *args):
-#func(self, *args)
+# func(self, *args)
 
 # def _dbus_method_name():
 # return 'dbus_' + func.__name__
 
-#decorator._dbus_method_name = _dbus_method_name
+# decorator._dbus_method_name = _dbus_method_name
 # return decorator
 
 
 # class bar:
-#__metaclass__ = meta
+# __metaclass__ = meta
 
-#@method
+# @method
 # def my_method(self):
 # print 'my_first_method'
 
-#@method
+# @method
 # def another_method(self):
 # print 'my_other_method'
 
-#x = bar()
+# x = bar()
 # x.my_method()
 
 # print x.my_method._dbus_method_name

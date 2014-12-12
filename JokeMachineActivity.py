@@ -82,12 +82,12 @@ class JokeMachineActivity(activity.Activity):
 
         # TODO - clean -  install gettext
         os.chdir(Globals.pwd)  # required for i18n.py to work
-        #gettext.install('JokeMachine', './po', unicode=True)
+        # gettext.install('JokeMachine', './po', unicode=True)
         # presLan_af = gettext.translation(
         #    "JokeMachine", os.path.join(Globals.pwd, 'po'),
         #     languages=['af'])
         # presLan_af.install()
-        #locale.setlocale(locale.LC_ALL, 'af')
+        # locale.setlocale(locale.LC_ALL, 'af')
 
         # customize theme
         Gtkrc = os.path.join(Globals.pwd, 'resources/Gtkrc')
@@ -144,7 +144,7 @@ class JokeMachineActivity(activity.Activity):
             self.alert(
                 _('Joke Machine'),
                 _("Please wait a moment for your buddy\'s"
-                	" Jokebooks to show up"))
+                  " Jokebooks to show up"))
             self.__is_initiator = False
             logging.debug('shared:  %s' % self.shared_activity.props.joined)
             # We are joining the activity
@@ -232,7 +232,7 @@ class JokeMachineActivity(activity.Activity):
             return
         if tubes_chan is None:
             logging.debug('Presence service did not create a tubes channel')
-            # okay - we're going to try 
+            # okay - we're going to try
             #        requesting one because this always fails on
             # build# <= 622
             logging.debug(
@@ -298,8 +298,8 @@ class JokeMachineActivity(activity.Activity):
 
             tube_conn = TubeConnection(
                 self.__telepathy_connection, self.tubes_chan[
-                    telepathy.CHANNEL_TYPE_TUBES], id, 
-                    group_iface=self.text_chan[
+                    telepathy.CHANNEL_TYPE_TUBES], id,
+                group_iface=self.text_chan[
                     telepathy.CHANNEL_INTERFACE_GROUP])
 
             logging.info('Starting a new JokeMachineSession')
@@ -319,7 +319,7 @@ class JokeMachineActivity(activity.Activity):
             handle = self.__telepathy_connection.GetSelfHandle()
             logging.debug('CS handle %u belongs to me, %u', cs_handle, handle)
         elif group.GetGroupFlags() & \
-             telepathy.CHANNEL_GROUP_FLAG_CHANNEL_SPECIFIC_HANDLES:
+                telepathy.CHANNEL_GROUP_FLAG_CHANNEL_SPECIFIC_HANDLES:
             handle = group.GetHandleOwners([cs_handle])[0]
             logging.debug('CS handle %u belongs to %u', cs_handle, handle)
         else:
@@ -380,7 +380,7 @@ class JokeMachineActivity(activity.Activity):
 
     @property
     def is_initiator(self):
-        '''True if I'm the one joining an activity 
+        '''True if I'm the one joining an activity
            which was shared by someone else'''
         ret = self.__is_initiator
         logging.debug('Getting is_initiator for activity: %r', ret)
@@ -404,16 +404,16 @@ class JokeMachineActivity(activity.Activity):
         return page
 
     # def alert(self, title, text=None):
-        #'''Show an alert above the activity.'''
-        #alert = NotifyAlert(timeout=10)
-        #alert.props.title = title
-        #alert.props.msg = text
+        # '''Show an alert above the activity.'''
+        # alert = NotifyAlert(timeout=10)
+        # alert.props.title = title
+        # alert.props.msg = text
         # self.add_alert(alert)
-        #alert.connect('response', self.__alert_cancel_cb)
+        # alert.connect('response', self.__alert_cancel_cb)
         # alert.show()
 
     # def __alert_cancel_cb(self, alert, response_id):
-        #'''Callback for alert events'''
+        # '''Callback for alert events'''
         # self.remove_alert(alert)
 
     def read_file(self, file_path):

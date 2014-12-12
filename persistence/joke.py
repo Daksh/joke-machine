@@ -108,7 +108,7 @@ class Joke(object):
             self.__joker_country = value
 
     def test_data(self):
-        #self.image = 'resources/knockknock.png'
+        # self.image = 'resources/knockknock.png'
         self.text = '''Knock, knock
 Who's there ?
 Alex.

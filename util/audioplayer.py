@@ -122,7 +122,7 @@ class AudioPlayer(object):
 
     def __on_audio_message(self, bus, message):
         t = message.type
-        #logging.debug('message: %r' % t)
+        # logging.debug('message: %r' % t)
         if t == gst.MESSAGE_EOS:
             self.pipeline.set_state(gst.StateType.NULL)
             logging.debug('AudioPlayer - EOS')

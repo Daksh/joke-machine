@@ -242,8 +242,8 @@ class Page(Gtk.Box):
             layout = Pango.Layout(context)
             layout.set_text(text[: text.find('\n')])
             (w, h) = layout.get_pixel_size()
-            # + theme.BORDER_WIDTH_CONTROL / 2 
-            # fudge factor - on the XO-1 hardware all known 
+            # + theme.BORDER_WIDTH_CONTROL / 2
+            # fudge factor - on the XO-1 hardware all known
             # solutions evaporate
             height = h
         textview.set_size_request(width, height)
@@ -294,7 +294,7 @@ class Page(Gtk.Box):
         chooser = ObjectChooser(title=_('Choose image'),
                                 # ._parent,
                                 parent=Globals.JokeMachineActivity,
-                                flags=Gtk.DIALOG_MODAL | \
+                                flags=Gtk.DIALOG_MODAL |
                                 Gtk.DIALOG_DESTROY_WITH_PARENT,
                                 **filter)
         try:
@@ -306,7 +306,8 @@ class Page(Gtk.Box):
                 journal_object = chooser.get_selected_object()
                 if hasattr(
                         obj,
-                        'image_blob') and journal_object and journal_object.file_path:
+                        'image_blob') and journal_object \
+                        and journal_object.file_path:
                     logging.debug(
                         'Getting journal object: %r, %s',
                         journal_object,
@@ -334,7 +335,8 @@ class Page(Gtk.Box):
         chooser = ObjectChooser(title=_('Choose Sound'),
                                 # ._parent,
                                 parent=Globals.JokeMachineActivity,
-                                flags=Gtk.DIALOG_MODAL | Gtk.DIALOG_DESTROY_WITH_PARENT,
+                                flags=Gtk.DIALOG_MODAL |
+                                Gtk.DIALOG_DESTROY_WITH_PARENT,
                                 **filter)
         try:
             result = chooser.run()
@@ -345,7 +347,8 @@ class Page(Gtk.Box):
                 journal_object = chooser.get_selected_object()
                 if hasattr(
                         obj,
-                        'sound_blob') and journal_object and journal_object.file_path:
+                        'sound_blob') and journal_object \
+                        and journal_object.file_path:
                     logging.debug(
                         'Getting journal object: %r, %s, %s',
                         journal_object,
@@ -374,7 +377,7 @@ class Page(Gtk.Box):
             return
 
         player = AudioPlayer()
-        #player.uri = sound_file
+        # player.uri = sound_file
         player.raw = obj.sound_blob
         player.play()
 

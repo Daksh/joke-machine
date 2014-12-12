@@ -137,21 +137,21 @@ def theme_widget(widget, width=-1, height=-1, highlight=False):
     # if highlight:
     # widget.modify_bg(state, Gdk.color_parse("#CCFF99"))
     # else:
-    #widget.modify_bg(state, color.get_gdk_color())
+    # widget.modify_bg(state, color.get_gdk_color())
 
     # if hasattr(widget, 'get_child'):
-    #c = widget.get_child()
+    # c = widget.get_child()
     # if c is not None:
     # for state, color in COLOR_FG_BUTTONS:
     # if highlight:
-    #c.modify_fg(state, COLOR_DARK_GREEN.get_gdk_color())
+    # c.modify_fg(state, COLOR_DARK_GREEN.get_gdk_color())
     # else:
-    #c.modify_fg(state, color.get_gdk_color())
+    # c.modify_fg(state, color.get_gdk_color())
     # else:
     # for state, color in COLOR_FG_BUTTONS:
-    #widget.modify_fg(state, color.get_gdk_color())
+    # widget.modify_fg(state, color.get_gdk_color())
 
     # if width > 0 or height > 0:
-    #widget.set_size_request(width, height)
+    # widget.set_size_request(width, height)
 
     # return widget

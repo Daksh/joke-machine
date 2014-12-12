@@ -43,8 +43,8 @@ state = JokeMachineState().test_data()
 print state.jokebooks
 print state.next_jokebook_id
 
-#[max(joke.id) for joke in self.__jokes]
+# [max(joke.id) for joke in self.__jokes]
 
-#pickle = state.dumps()
-#new_state = JokeMachineState.loads(pickle)
+# pickle = state.dumps()
+# new_state = JokeMachineState.loads(pickle)
 # dump(new_state)
